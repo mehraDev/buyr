@@ -1,0 +1,20 @@
+.column-display {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  
+  .column-display h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .column-display ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .column-display li {
+    margin-bottom: 5px;
+  }
+  
