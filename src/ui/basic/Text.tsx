@@ -12,10 +12,10 @@
  * @property {'none' | 'cap' | 'upp' | 'low'} [textTransform] - Text transform property
  */
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 interface IText {
-  s?: string;
+  s?: string; //px
   w?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
   c?: string;
   m?: number[];
@@ -24,7 +24,8 @@ interface IText {
   mt?: string;
   mr?: string;
   ml?: string;
-  tt?: 'none' | 'cap' | 'upp' | 'low';
+  tt?: "none" | "cap" | "upp" | "low";
+  type?: "heading" | "subheading";
 }
 
 const Text = styled.div<IText>`
@@ -37,19 +38,29 @@ const Text = styled.div<IText>`
   margin-top: ${(props) => (props.mt ? props.mt : "")};
   margin-right: ${(props) => (props.mr ? props.mr : "")};
   margin-left: ${(props) => (props.ml ? props.ml : "")};
-  
+
   text-transform: ${(props) => {
     switch (props.tt) {
-      case 'cap':
-        return 'capitalize';
-      case 'upp':
-        return 'uppercase';
-      case 'low':
-        return 'lowercase';
+      case "cap":
+        return "capitalize";
+      case "upp":
+        return "uppercase";
+      case "low":
+        return "lowercase";
       default:
         return props.tt;
     }
   }};
-`
+  ${(props) =>
+    props.type === "heading" &&
+    css`
+      font-family: "Raleway", sans-serif;
+    `}
+  ${(props) =>
+    props.type === "subheading" &&
+    css`
+      font-family: "Raleway", sans-serif;
+    `}
+`;
 
 export default Text;

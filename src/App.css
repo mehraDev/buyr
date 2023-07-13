@@ -1,10 +1,10 @@
 body {
   margin: 0;
-  font-family: open-sans,'Raleway', sans-serif;
+  font-family: open-sans, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-  
+  color: rgba(0, 0, 0, 0.88);
 }
 * {
   box-sizing: border-box;

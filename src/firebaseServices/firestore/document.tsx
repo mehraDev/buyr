@@ -1,15 +1,19 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from 'firebaseServices/firebase';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "firebaseServices/firebase";
 
-async function createDocument(location: string, documentId: string,data?: any): Promise<void> {
+async function createDocument(
+  location: string,
+  documentId: string,
+  data?: any
+): Promise<void> {
   try {
     const documentRef = doc(db, location, documentId);
     const documentData = data || {};
     await setDoc(documentRef, documentData);
-    console.log(`Document created successfully at: ${location} ${documentId}` );
+    console.log(`Document created successfully at: ${location} ${documentId}`);
   } catch (error: any) {
-    console.error('Error creating document:', error);
-    throw new Error('Failed to create document');
+    console.error("Error creating document:", error);
+    throw new Error("Failed to create document");
   }
 }
 
@@ -17,7 +21,11 @@ interface DocumentFields {
   [fieldName: string]: any;
 }
 
-async function fetchDocument(location: string, documentId: string, fields?: string[]) : Promise<DocumentFields | undefined>{
+async function fetchDocument(
+  location: string,
+  documentId: string,
+  fields?: string[]
+): Promise<DocumentFields | undefined> {
   try {
     const docRef = doc(db, location, documentId);
     const documentSnapshot = await getDoc(docRef);
@@ -40,11 +48,10 @@ async function fetchDocument(location: string, documentId: string, fields?: stri
     } else {
       console.log("Document does not exist:", documentId);
     }
-  } catch(error) {
+  } catch (error) {
     console.error("Error fetching document:", error);
     throw new Error("Failed to fetch document");
   }
 }
 
-
-export {fetchDocument,createDocument}
+export { fetchDocument, createDocument };

@@ -1,24 +1,66 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CSSProperties, useEffect, useState } from "react";
-import { faImage,faChevronLeft,faRing,faCircleExclamation,faGear,faHouse,faXmark,faBell, faArrowLeft, faArrowRight,faBars,faEllipsisVertical,faChevronDown,faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import styled from "styled-components";
+import {
+  faLeaf,
+  faSortUp,
+  faTimes,
+  faSearch,
+  faDiamond,
+  faImage,
+  faThLarge,
+  faList,
+  faPhone,
+  faChevronLeft,
+  faRing,
+  faCircleExclamation,
+  faGear,
+  faHouse,
+  faXmark,
+  faBell,
+  faArrowLeft,
+  faArrowRight,
+  faBars,
+  faEllipsisVertical,
+  faChevronDown,
+  faChevronUp,
+  faSortDown,
+  faLocation,
+} from "@fortawesome/free-solid-svg-icons";
 
+import {
+  faInstagram,
+  faFacebook,
+  faWhatsapp,
+} from "@fortawesome/free-brands-svg-icons";
 
 export enum IconName {
-  Notification = 'notification',
-  LeftArrow = 'leftArrow',
-  RightArrow = 'rightArrow',
-  Bars = 'bars',
-  Ellipsis = 'ellipsis',
-  ChevronDown = 'chevronDown',
-  ChevronUp = 'chevronUp',
-  Close = 'faXmark',
-  Home = 'home',
-  Setting = 'setting',
-  Alert = 'alert',
-  VegNonveg = 'vegNonveg',
-  GoBack = 'goBack',
-  Image = 'image'
+  Search = "search",
+  Clear = "clear",
+  Notification = "notification",
+  LeftArrow = "leftArrow",
+  RightArrow = "rightArrow",
+  Bars = "bars",
+  Ellipsis = "ellipsis",
+  ChevronDown = "chevronDown",
+  ChevronUp = "chevronUp",
+  Close = "faXmark",
+  Home = "home",
+  Setting = "setting",
+  Alert = "alert",
+  VegNonveg = "vegNonveg",
+  GoBack = "goBack",
+  Image = "image",
+  Whatsapp = "whatsapp",
+  Facebook = "facebook",
+  Instagram = "instagram",
+  Phone = "phone",
+  Grid = "grid",
+  List = "list",
+  Diamond = "diamond",
+  Location = "location",
+  DownArrow = "downArrow",
+  UpArrow = "upArrow",
+  Leaf = "leaf",
 }
 
 interface Icons {
@@ -39,9 +81,21 @@ export const icons: Icons = {
   alert: faCircleExclamation,
   vegNonveg: faRing,
   goBack: faChevronLeft,
-  image: faImage
+  image: faImage,
+  whatsapp: faWhatsapp,
+  facebook: faFacebook,
+  instagram: faInstagram,
+  phone: faPhone,
+  grid: faThLarge,
+  list: faList,
+  diamond: faDiamond,
+  location: faLocation,
+  downArrow: faSortDown,
+  clear: faTimes,
+  search: faSearch,
+  upArrow: faSortUp,
+  leaf: faLeaf,
 };
-
 
 interface IconProps {
   name: IconName;
@@ -50,21 +104,25 @@ interface IconProps {
   width?: number;
   height?: number;
   borderRadius?: number;
-  onClick? : () => void,
-  isHoverable? : boolean,
-  clickEffect? : boolean
+  onClick?: () => void;
+  isHoverable?: boolean;
+  clickEffect?: boolean;
+  padding?: string;
+  style?: CSSProperties;
 }
 
 const Icon: React.FC<IconProps> = ({
   name,
   className,
   color,
-  width ,
-  height ,
+  width,
+  height,
   borderRadius = 2.5,
   isHoverable = true,
   clickEffect = true,
-  onClick
+  padding,
+  style,
+  onClick,
 }) => {
   const [, setIsHovered] = useState(false);
   const icon = icons[name];
@@ -79,7 +137,7 @@ const Icon: React.FC<IconProps> = ({
       return () => clearTimeout(timeout);
     }
   }, [isClicked]);
-  
+
   const handleClick = () => {
     setIsClicked(true);
     if (onClick) {
@@ -89,30 +147,24 @@ const Icon: React.FC<IconProps> = ({
 
   const iconStyle: CSSProperties = {
     color,
-    width: width ? `${width}rem` : '',
-    height:  height ? `${height}rem`: '',
+    width: width ? `${width}rem` : "",
+    height: height ? `${height}rem` : "",
     borderRadius: `${borderRadius}rem`,
-    cursor: isHoverable ? 'pointer' : 'default',
-    background: (isClicked && clickEffect) ? '#04000008' : '',
-    padding: '4px',
+    cursor: isHoverable ? "pointer" : "default",
+    background: isClicked && clickEffect ? "#04000008" : "",
+    padding: padding ? padding : "4px",
+    ...style,
   };
   return (
-<IconWrapper>
-<FontAwesomeIcon
+    <FontAwesomeIcon
       icon={icon}
       className={className}
-      style={{ ...iconStyle}}
+      style={{ ...iconStyle }}
       onClick={() => handleClick()}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     />
-</IconWrapper>
-   
-
-    
   );
 };
 
-const IconWrapper = styled.div`
-`;
 export default Icon;

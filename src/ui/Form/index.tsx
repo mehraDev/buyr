@@ -6,6 +6,15 @@ import InputRadio from "./Inputs/InputRadio";
 import DropdownInput from "./Inputs/DropdownInput";
 import InputText from "./Inputs/InputText";
 import InputInteger from "./Inputs/InputInteger";
+import InputSearch from "./Inputs/InputSearch";
 
 export default Form;
-export { InputText ,InputInteger,InputDescription,InputRadio, DropdownInput,InputImage };
+export {
+  InputSearch,
+  InputText,
+  InputInteger,
+  InputDescription,
+  InputRadio,
+  DropdownInput,
+  InputImage,
+};
