@@ -37,12 +37,12 @@ const ProfileCard: React.FC<IProfileCard> = ({
       }}
       j="between"
     >
-      <Row>
-        <Box w="6rem" h="6rem">
-          {"image" && <Img src={PI} alt={name} w="6rem" h="6rem" br="10px" />}
+      <Col a="center">
+        <Box w="8rem" h="8rem">
+          {"image" && <Img src={PI} alt={name} w="8rem" h="8rem" br="10px" />}
         </Box>
-        <Col p="1rem" style={{ gap: "1rem" }}>
-          <Col>
+        <Col a="center" p="1rem" style={{ gap: "1rem" }}>
+          <Col a="center">
             <Text tt="cap" s="24" w={7} type="heading" c="#212121">
               {name}
             </Text>
@@ -69,7 +69,7 @@ const ProfileCard: React.FC<IProfileCard> = ({
             </Text>
           </Row>
         </Col>
-      </Row>
+      </Col>
       <Col w="initial" style={{ gap: "8px" }}>
         <ContactCard />
       </Col>
@@ -86,7 +86,7 @@ const About: React.FC<{ tags: string[] }> = ({ tags }) => {
   return (
     <>
       {tags.length > 0 && (
-        <Row j="start" a="center">
+        <Row j="center" a="center">
           {shouldDisplayLeafIcon && (
             <Icon
               name={IconName.Leaf}
