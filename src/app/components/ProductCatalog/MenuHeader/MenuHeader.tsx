@@ -8,19 +8,19 @@ const MenuHeader: React.FC<IMenuHeader> = ({ name }) => {
   const theme = useTheme();
   return (
     <Row
-      h="2.5rem"
+      h="2rem"
       j="center"
       a="center"
       style={{
         top: 0,
         position: "fixed",
-        zIndex: "1",
+        zIndex: 2,
         background: "#ffffff",
         transition: "opacity 0.3s",
-        borderBottom: "1px dashed" + theme.neutralColor.border,
+        // borderBottom: "1px dashed" + theme.neutralColor.border,
       }}
     >
-      <Text tt="upp" type="heading" s="16" w={6} c={theme.brandColor.primary}>
+      <Text tt="cap" type="heading" s="16" w={7} c={theme.neutralColor.text}>
         {name}
       </Text>
     </Row>

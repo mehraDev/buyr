@@ -1,3 +1,3 @@
-import fetchImageFromStorage from "./images";
+import fetchImageFromStorage, { getUrl } from "./images";
 
-export {fetchImageFromStorage}
+export { fetchImageFromStorage, getUrl };

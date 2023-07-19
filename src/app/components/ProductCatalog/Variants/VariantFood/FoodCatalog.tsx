@@ -9,6 +9,7 @@ import { IProductFood, ISellerProfile } from "app/interfaces";
 import FoodMenu from "./FoodMenu";
 import MenuHeader from "../../MenuHeader/MenuHeader";
 import { Sticky } from "ui/Sticky";
+import { SellerIdProvider } from "../../SellerIdContext";
 
 interface IFoodCatalog {
   id: string;
@@ -19,6 +20,7 @@ const FoodCatalog: React.FC<IFoodCatalog> = ({ id, profile }) => {
   const [profileImageUrl, setProfileImageUrl] = useState<string | undefined>(
     undefined
   );
+  console.log(profile);
   const [products, setProducts] = useState<IProductFood[]>([]);
   const [, setImageUrl] = useState("");
   const { shopName, about, address } = profile;
@@ -67,58 +69,55 @@ const FoodCatalog: React.FC<IFoodCatalog> = ({ id, profile }) => {
     }
   }, [products, id]);
 
-  const headerHeight = 40;
+  const MENU_HEADER_HEIGHT = 32;
   const profileCardBottom = profileCardRef.current
     ? profileCardRef.current.offsetHeight
     : 0;
-  console.log(profileCardRef.current);
-  const stickyHeaderPos = profileCardBottom - headerHeight;
-  const stickyMenuPos = stickyHeaderPos;
+  const stickyPointHeader = profileCardBottom - MENU_HEADER_HEIGHT;
+  const stickyPointMenu = stickyPointHeader;
 
   return (
-    <div>
-      <SplashScreen
-        name={profile.shopName}
-        tagline={"We make delicious moments for you"}
-      />
-      <Col
-        p="0 0 2rem"
-        m={[0]}
-        ref={containerRef}
-        style={{
-          height: "100vh",
-          overflowY: "scroll",
-          position: "fixed",
-          background: theme.neutralColor.bgLayout,
-        }}
-      >
-        <Sticky
-          at={stickyHeaderPos}
-          stickyStyle={{ opacity: 1, zIndex: "2" }}
-          style={{
-            opacity: 0,
-          }}
-          containerRef={containerRef}
-          parentRef={headerRef}
-        >
-          <MenuHeader name={shopName} />
-        </Sticky>
-        <Box ref={profileCardRef}>
-          <ProfileCard
-            name={shopName}
-            address={address || ""}
-            about={about || ""}
-            image={profileImageUrl}
-          />
-        </Box>
-
-        <FoodMenu
-          products={products}
-          offsetTop={stickyMenuPos}
-          container={containerRef}
+    <SellerIdProvider sellerId={id}>
+      <>
+        <SplashScreen
+          name={profile.shopName}
+          tagline={"We make delicious moments for you"}
         />
-      </Col>
-    </div>
+        <Col
+          p="0 0 2rem"
+          m={[0]}
+          ref={containerRef}
+          style={{
+            height: "100vh",
+            overflowY: "scroll",
+            position: "fixed",
+            background: theme.neutralColor.fillQuaternary,
+          }}
+        >
+          <Sticky
+            height={MENU_HEADER_HEIGHT}
+            at={stickyPointHeader}
+            stickyStyle={{ opacity: 1, position: "fixed" }}
+            style={{ opacity: 0, position: "fixed" }}
+            containerRef={containerRef}
+            parentRef={headerRef}
+          >
+            <MenuHeader name={shopName} />
+          </Sticky>
+
+          <Box ref={profileCardRef}>
+            <ProfileCard profile={profile} image={profileImageUrl} />
+          </Box>
+
+          <FoodMenu
+            products={products}
+            stickyPoint={stickyPointMenu}
+            container={containerRef}
+            stickyOffset={MENU_HEADER_HEIGHT}
+          />
+        </Col>
+      </>
+    </SellerIdProvider>
   );
 };
 

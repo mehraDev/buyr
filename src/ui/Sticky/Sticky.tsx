@@ -8,6 +8,8 @@ interface ISticky {
   style?: React.CSSProperties;
   parentRef?: React.RefObject<HTMLDivElement>;
   containerRef: React.RefObject<HTMLDivElement>;
+  height?: number;
+  onStickyChange?: () => void;
 }
 
 const Sticky: React.FC<ISticky> = ({
@@ -17,6 +19,8 @@ const Sticky: React.FC<ISticky> = ({
   style,
   parentRef,
   containerRef,
+  height,
+  onStickyChange,
 }) => {
   const [isSticky, setIsSticky] = useState(false);
   const [, setScrollDirection] = useState<"up" | "down" | null>(null);
@@ -34,7 +38,12 @@ const Sticky: React.FC<ISticky> = ({
           prevScrollY.current < currentScrollY ? "down" : "up"
         );
         prevScrollY.current = currentScrollY;
-        setIsSticky(currentScrollY >= at);
+
+        const newIsSticky = currentScrollY >= at;
+        setIsSticky(newIsSticky);
+        if (newIsSticky !== isSticky && onStickyChange) {
+          onStickyChange();
+        }
       }
     };
 
@@ -47,8 +56,26 @@ const Sticky: React.FC<ISticky> = ({
         containerRef.current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [at, containerRef]);
+  }, [at, containerRef, isSticky, onStickyChange]);
 
+  if (height) {
+    return (
+      <Box h={`${height}px`} ref={ref}>
+        <Box
+          h={`${height}px`}
+          style={
+            isSticky
+              ? {
+                  ...stickyStyle,
+                }
+              : { ...style }
+          }
+        >
+          {children}
+        </Box>
+      </Box>
+    );
+  }
   return (
     <Box
       ref={ref}
