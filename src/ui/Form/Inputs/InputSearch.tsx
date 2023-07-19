@@ -19,6 +19,7 @@ const Input = styled.input<{
   hasValue: boolean;
   borderColor: string;
   borderRadius?: string;
+  isInputFocused: boolean;
 }>`
   color: ${({ theme }) => theme.neutralColor.text};
   font-weight: 400;
@@ -27,16 +28,15 @@ const Input = styled.input<{
   font-size: 16px;
   width: 100%;
   position: relative;
-  border-color: ${({ theme }) => theme.neutralColor.borderSecondary};
+  border-color: ${({ theme }) => theme.neutralColor.border};
   border-radius: ${({ borderRadius }) => borderRadius || "9px"};
   border-style: solid;
   outline: none;
   transition: border-color 0.3s ease;
   &:focus {
     border-color: ${({ borderColor, theme }) =>
-      borderColor ? borderColor : theme.brandColor.primaryHover};
+      borderColor ? borderColor : theme.neutralColor.border};
     outline: none;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -52,7 +52,7 @@ const InputSearch: React.FC<IInputSearch> = ({
   error,
   onClear,
 }) => {
-  const [, setIsInputFocused] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
@@ -90,6 +90,7 @@ const InputSearch: React.FC<IInputSearch> = ({
           required={required}
           borderColor={borderColor}
           borderRadius={borderRadius}
+          isInputFocused={isInputFocused} // Pass the isInputFocused state as a prop
         />
         {value !== "" && (
           <ClearIcon
@@ -102,8 +103,13 @@ const InputSearch: React.FC<IInputSearch> = ({
           />
         )}
         <SearchIcon
+          borderRadius={0}
           name={IconName.Search}
-          color={theme.brandColor.primaryHover}
+          color={
+            isInputFocused
+              ? theme.brandColor.primaryActive
+              : theme.neutralColor.border
+          }
         />
       </Row>
       {error && <Error>{error}</Error>}

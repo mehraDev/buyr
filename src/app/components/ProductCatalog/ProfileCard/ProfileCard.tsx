@@ -4,28 +4,19 @@ import { useTheme } from "styled-components";
 import PI from "../../../../assets/cb.jpeg";
 import Icon, { IconName } from "ui/Icon";
 import ContactCard from "../ContactCard/ContactCard";
-
-// assuming you have an Icon component
+import { ISellerProfile } from "app/interfaces";
 
 interface IProfileCard {
-  name: string;
-  about: string;
-  address: string;
   image?: string;
-
-  onScroll?: () => void;
+  profile: ISellerProfile;
 }
 
-const ProfileCard: React.FC<IProfileCard> = ({
-  name,
-  about,
-  address,
-  image,
-  onScroll,
-}) => {
+const ProfileCard: React.FC<IProfileCard> = ({ profile, image }) => {
+  const theme = useTheme();
+  const { shopName, address, about, wa, fb, phone, insta } = profile;
   const aboutItems = about.split(" ");
   const displayedItems = aboutItems.slice(0, 3);
-  const theme = useTheme();
+
   return (
     <Row
       a="center"
@@ -37,41 +28,67 @@ const ProfileCard: React.FC<IProfileCard> = ({
       }}
       j="between"
     >
-      <Row>
-        <Box w="6rem" h="6rem">
-          {"image" && <Img src={PI} alt={name} w="6rem" h="6rem" br="10px" />}
+      <Col a="center">
+        <Box w="9rem" h="9rem">
+          {"image" && (
+            <Img
+              src={PI}
+              alt={shopName}
+              w="9rem"
+              h="9rem"
+              br="10px"
+              style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
+            />
+          )}
         </Box>
-        <Col p="1rem" style={{ gap: "1rem" }}>
-          <Col>
-            <Text tt="cap" s="24" w={7} type="heading" c="#212121">
-              {name}
+        <Col a="center" p="0.5rem 0 " style={{ gap: "1rem" }}>
+          <Col a="center">
+            <Text
+              tt="cap"
+              s="24"
+              w={7}
+              type="heading"
+              c="#212121"
+              style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
+            >
+              {shopName}
             </Text>
             <About tags={displayedItems} />
           </Col>
           <Row
-            a="end"
+            a="center"
             w="initial"
-            p="0 0 0.25rem"
+            p="6px"
             style={{
-              borderBottom: "1px solid" + theme.neutralColor.borderSecondary,
+              border: " 1px solid #ca1a193d",
+              borderLeft: "0px",
+              borderRight: "0px",
             }}
           >
             <Icon
               name={IconName.Location}
               width={1}
               padding="0"
-              color={"#e53935"}
+              color={"#CA1919"}
               borderRadius={0.35}
               height={1}
             />
-            <Text ml="8px" c={theme.neutralColor.textSecondary} s="16" w={5}>
-              Sirsa Locality, Sirsa
+            <Text ml="8px" c={theme.neutralColor.textSecondary} s="14" w={4}>
+              {address}
             </Text>
           </Row>
         </Col>
-      </Row>
-      <Col w="initial" style={{ gap: "8px" }}>
-        <ContactCard />
+      </Col>
+      <Col
+        w="initial"
+        style={{ gap: "8px", position: "absolute", right: "1rem" }}
+      >
+        <ContactCard
+          phone={phone || []}
+          wa={wa || []}
+          fb={fb || []}
+          insta={insta || []}
+        />
       </Col>
     </Row>
   );
@@ -86,7 +103,7 @@ const About: React.FC<{ tags: string[] }> = ({ tags }) => {
   return (
     <>
       {tags.length > 0 && (
-        <Row j="start" a="center">
+        <Row j="center" a="center">
           {shouldDisplayLeafIcon && (
             <Icon
               name={IconName.Leaf}

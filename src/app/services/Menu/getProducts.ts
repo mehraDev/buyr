@@ -5,11 +5,10 @@ import { fetchDocument } from "firebaseServices/firestore/document";
 async function getProducts(id: string): Promise<IProduct[] | undefined> {
   const PRODUCT_LOCATION = `sellers/${id}/private`;
   try {
-    const products =  menu;//await fetchDocument(PRODUCT_LOCATION, 'products');
-    console.log(products)
+    const products = menu; //await fetchDocument(PRODUCT_LOCATION, 'products');
     if (products && products) {
       return products as IProduct[];
-    } 
+    }
 
     return undefined;
   } catch (error) {

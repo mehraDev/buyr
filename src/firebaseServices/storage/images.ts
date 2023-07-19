@@ -12,5 +12,17 @@ async function fetchImageFromStorage(folderPath: string, imageName: string) {
     throw error;
   }
 }
-export default fetchImageFromStorage;
 
+export async function getUrl(location: string): Promise<string> {
+  try {
+    const imageRef = ref(storage, location);
+    const downloadURL = await getDownloadURL(imageRef);
+
+    return downloadURL;
+  } catch (error) {
+    console.error("Error getting image URL:", error);
+    return "";
+  }
+}
+
+export default fetchImageFromStorage;
