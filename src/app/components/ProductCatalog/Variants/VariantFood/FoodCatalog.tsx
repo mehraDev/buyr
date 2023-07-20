@@ -55,8 +55,8 @@ const FoodCatalog: React.FC<IFoodCatalog> = ({ id, profile }) => {
 
   useEffect(() => {
     const fetchImageUrl = async () => {
-      const folderPath = `s/food/usr/${id}/p`;
-      const imageName = "pastery-strawberry.jpg";
+      const folderPath = `s/food/usr/${id}`;
+      const imageName = "profile.png";
       try {
         const url = await fetchImageFromStorage(folderPath, imageName);
         setImageUrl(url);

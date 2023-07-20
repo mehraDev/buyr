@@ -32,7 +32,7 @@ const ProfileCard: React.FC<IProfileCard> = ({ profile, image }) => {
         <Box w="9rem" h="9rem">
           {"image" && (
             <Img
-              src={PI}
+              src={image}
               alt={shopName}
               w="9rem"
               h="9rem"
