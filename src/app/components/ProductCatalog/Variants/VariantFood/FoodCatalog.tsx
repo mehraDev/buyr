@@ -53,22 +53,6 @@ const FoodCatalog: React.FC<IFoodCatalog> = ({ id, profile }) => {
   }, [id]);
   const theme = useTheme();
 
-  useEffect(() => {
-    const fetchImageUrl = async () => {
-      const folderPath = `s/food/usr/${id}`;
-      const imageName = "profile.png";
-      try {
-        const url = await fetchImageFromStorage(folderPath, imageName);
-        setImageUrl(url);
-      } catch (error) {
-        console.log("Error fetching profile image:", error);
-      }
-    };
-    if (id && products && products.length) {
-      fetchImageUrl();
-    }
-  }, [products, id]);
-
   const MENU_HEADER_HEIGHT = 32;
   const profileCardBottom = profileCardRef.current
     ? profileCardRef.current.offsetHeight
@@ -82,6 +66,7 @@ const FoodCatalog: React.FC<IFoodCatalog> = ({ id, profile }) => {
         <SplashScreen
           name={profile.shopName}
           tagline={"We make delicious moments for you"}
+          timer={2}
         />
         <Col
           p="0 0 2rem"

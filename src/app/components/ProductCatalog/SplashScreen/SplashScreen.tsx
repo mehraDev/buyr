@@ -1,35 +1,33 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { Col, Row, Text } from "ui/basic";
 interface ISplashScreen {
   name?: string;
   tagline?: string;
+  timer?: number;
 }
 
-const SplashScreen: React.FC<ISplashScreen> = ({ name, tagline }) => {
-  const [showWelcome, setShowWelcome] = useState(true);
+const SplashScreen: React.FC<ISplashScreen> = ({ name, tagline, timer }) => {
+  const [display, setDisplay] = useState(true);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShowWelcome(false);
-    }, 1000);
+    if (typeof timer === "number") {
+      const timeout = setTimeout(() => {
+        setDisplay(false);
+      }, timer * 1000);
 
-    const cleanup = () => {
-      clearTimeout(timeout);
-    };
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [timer]);
 
-    return cleanup;
-  }, []);
-
-  if (!showWelcome) {
+  if (!display) {
     return null;
   }
 
   return (
-    <Wrapper
-      showWelcome={showWelcome}
-      onAnimationEnd={() => setShowWelcome(false)}
-    >
+    <Wrapper>
       <Col w="80%" j="between" style={{ height: "100%" }}>
         {name && (
           <Row j="center" a="end" style={{ height: "100%" }}>
@@ -56,7 +54,7 @@ const SplashScreen: React.FC<ISplashScreen> = ({ name, tagline }) => {
   );
 };
 
-const Wrapper = styled.div<{ showWelcome: boolean }>`
+const Wrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
