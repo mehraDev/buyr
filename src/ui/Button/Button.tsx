@@ -1,86 +1,142 @@
-import React, { ButtonHTMLAttributes } from 'react';
-import styled from 'styled-components';
+import React, { ButtonHTMLAttributes } from "react";
+import styled from "styled-components";
+import theme from "ui/Utils/Media/Theme/theme";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
-  size?: 'small' | 'medium' | 'large';
+export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary";
+  size?: "small" | "medium" | "large";
   fullWidth?: boolean;
   width?: string;
   padding?: string;
   margin?: string;
-  color? : string;
-  bg? : string;
-  border? : string;
+  color?: string;
+  bg?: string;
+  border?: string;
+  br?: string;
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<IButton> = ({
   children,
-  variant = 'primary',
-  size = 'medium',
+  variant = "primary",
+  size,
   color,
   bg,
   border,
+  br,
+  disabled = false,
   ...rest
 }) => {
-
   return (
-    <ButtonWrapper variant={variant} size={size} {...rest} color={color} bg={bg} border={border}>
+    <ButtonWrapper
+      variant={variant}
+      size={size}
+      {...rest}
+      color={color}
+      bg={bg}
+      border={border}
+      br={br}
+      disabled={disabled}
+    >
       {children}
     </ButtonWrapper>
   );
 };
+const ButtonWrapper = styled.button<IButton>`
+  background-color: ${({ bg, variant, disabled }) =>
+    disabled
+      ? variant === "primary"
+        ? theme.neutralColor.textTertiary
+        : "transparent"
+      : bg ||
+        (variant === "primary" ? theme.brandColor.primary : "transparent")};
 
-const ButtonWrapper = styled.button<ButtonProps>`
-  background-color: ${({bg , variant}) => 
-    bg ? bg:   variant === 'primary' ? '#007aff' : 'transparent'};
-  color: ${({color,variant}) => 
-  (color ? color : variant === 'primary' ? '#ffffff' : '#007aff')};
-  border: ${({color , border,variant}) =>
-    (border ? color : variant === 'primary' ? '#ffffff' : '#007aff')};
-  border-radius: 4px;
+  color: ${({ color, variant, disabled }) => {
+    if (color) {
+      if (disabled && variant === "secondary") {
+        return theme.neutralColor.textTertiary;
+      } else {
+        return color;
+      }
+    } else {
+      return variant === "primary" ? "#ffffff" : theme.brandColor.primary;
+    }
+  }};
+
+  border: ${({ color, border, variant, disabled }) => {
+    if (border) {
+      return border;
+    } else if (variant === "primary") {
+      return "#ffffff";
+    } else if (variant === "secondary") {
+      if (disabled) {
+        return `1px solid ${theme.neutralColor.textTertiary}`;
+      } else if (color) {
+        return `1px solid ${color}`;
+      } else {
+        return `1px solid ${theme.brandColor.primary}`;
+      }
+    } else {
+      return disabled && variant === "secondary"
+        ? `1px solid ${theme.neutralColor.text}`
+        : `1px solid ${theme.brandColor.primary}`;
+    }
+  }};
+
+  border-radius: ${({ br }) => br || "4px"};
+  padding: ${({ padding }) => padding || "0.5rem 1rem"};
+
   ${(props) =>
     props.fullWidth &&
     `
     display: block;
     width: 100%;
   `}
-  ${(props) =>
-    props.width &&
-    `
-    width: ${props.width};
-  `}
-  ${(props) =>
-    props.padding &&
-    `
-    padding: ${props.padding};
-  `}
-  ${(props) =>
-    props.margin &&
-    `
-    margin: ${props.margin};
-  `}
+
+  ${(props) => props.width && `width: ${props.width};`}
+
+  ${(props) => props.padding && `padding: ${props.padding};`}
+
+  ${(props) => props.margin && `margin: ${props.margin};`}
+
   font-size: ${(props) =>
-    props.size === 'small'
-      ? '0.8rem'
-      : props.size === 'medium'
-      ? '1rem'
-      : '1.2rem'};
-  font-weight: bold;
-  cursor: pointer;
+    props.size === "small"
+      ? "12px"
+      : props.size === "medium"
+      ? "14px"
+      : props.size === "large"
+      ? "16pxrem"
+      : props.size};
+
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
     border-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${(props) =>
-      props.variant === 'primary' ? '#0062cc' : '#007aff'};
-    color: ${(props) => (props.variant === 'primary' ? '#ffffff' : '#ffffff')};
-    border-color: ${(props) =>
-      props.variant === 'primary' ? 'none' : '#0062cc'};
+    background-color: ${({ bg, variant, disabled }) => {
+      if (disabled) {
+        return variant === "secondary" ? "" : theme.neutralColor.textQuaternary;
+      } else {
+        return (
+          bg ||
+          (variant === "primary"
+            ? theme.brandColor.primaryActive
+            : variant === "secondary"
+            ? ""
+            : "#007aff")
+        );
+      }
+    }};
   }
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    justify-content: center;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
 `;
 
+const ButtonUnderlined = styled(Button)`
+  text-decoration: underline;
+`;
+export { ButtonUnderlined };
 export default Button;
