@@ -1,7 +1,21 @@
-import { DefaultTheme as StyledDefaultTheme } from 'styled-components';
+import { DefaultTheme as StyledDefaultTheme } from "styled-components";
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme extends StyledDefaultTheme {
+    palette: {
+      pallete1: {
+        deepBlue: string;
+        offWhite: string;
+        mutedRed: string;
+        slateGray: string;
+        teal: string;
+        lightGray: string;
+        darkGray: string;
+        successGreen: string;
+        warningYellow: string;
+        infoBlue: string;
+      };
+    };
     brandColor: {
       primaryBg: string;
       primaryBgHover: string;
@@ -24,7 +38,6 @@ declare module 'styled-components' {
       pinkTextHover: string;
       pinkText: string;
       pinkTextActive: string;
-      
     };
     neutralColor: {
       text: string;
@@ -64,9 +77,9 @@ declare module 'styled-components' {
       lineHeightHeading4: number;
       lineHeightHeading5: number;
     };
-    shadow :{
+    shadow: {
       boxShadow: string;
       boxShadowSecondary: string;
-    }
+    };
   }
 }

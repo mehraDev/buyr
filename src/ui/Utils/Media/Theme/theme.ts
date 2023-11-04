@@ -9,8 +9,6 @@ const brandColor = {
   primaryTextHover: "#f5477b",
   primaryText: "#e91e63",
   primaryTextActive: "#c21051",
-
-  // color: Pink
   pinkBg: "#fdeaf1",
   pinkBgHover: "#f7c7dc",
   pinkBorder: "#f199b1",
@@ -62,6 +60,20 @@ const lineHeight = {
   lineHeightHeading4: 1.4,
   lineHeightHeading5: 1.5,
 };
+const palette = {
+  pallete1: {
+    deepBlue: "#003366", // For primary headers, footers, and accents
+    offWhite: "#F5F5F5", // For background and contrasting against deepBlue
+    mutedRed: "#D32F2F", // For error messages or alerts
+    slateGray: "#708090", // For secondary text or less emphasized components
+    teal: "#008080", // For call-to-action elements like buttons
+    lightGray: "#E0E0E0", // For borders and lines
+    darkGray: "#A9A9A9", // For tertiary text or disabled state
+    successGreen: "#388E3C", // For success messages or indicators
+    warningYellow: "#FFA000", // For warning messages or indicators
+    infoBlue: "#1976D2", // For informational messages or elements
+  },
+};
 const shadow = {
   boxShadowSecondary: "rgba(60, 66, 87, 0.08) 0px 15px 35px 0px, rgba(0, 0, 0, 0.12) 0px 5px 15px 0px",
   boxShadow: "0 6px 16px 0 rgba(0, 0, 0, 0.08),0 3px 6px -4px rgba(0, 0, 0, 0.12),0 9px 28px 8px rgba(0, 0, 0, 0.05)",
@@ -73,6 +85,7 @@ const theme = {
   font,
   lineHeight,
   shadow,
+  palette,
 };
 
 export default theme;
