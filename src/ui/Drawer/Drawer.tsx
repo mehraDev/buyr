@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import styled, { useTheme } from "styled-components";
+import styled, { keyframes, useTheme } from "styled-components";
 import { Box, Col } from "ui/basic";
 
 interface IDrawer {
@@ -8,87 +8,90 @@ interface IDrawer {
   onClose?: () => void;
   children: ReactNode;
   h?: string;
+  j?: "center" | "start" | "end";
 }
 
-const Drawer: React.FC<IDrawer> = ({
-  bg,
-  onClose,
-  children,
-  isOpen,
-  h = "90%",
-}) => {
-  const theme = useTheme();
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [closeDrawer, setCloseDrawer] = useState(true);
-  const [wrapperHeight, setWrapperHeight] = useState<string>("100%"); // Initialize with 100% or some default value
-
-  useEffect(() => {
-    const updateWrapperHeight = () => {
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      setWrapperHeight(`${vh}px`);
-    };
-
-    window.addEventListener("resize", updateWrapperHeight);
-    updateWrapperHeight(); // Set initial height
-
-    return () => {
-      window.removeEventListener("resize", updateWrapperHeight);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      setCloseDrawer(false);
-      const timeoutId = setTimeout(() => {
-        setOpenDrawer(true);
-      }, 0);
-      return () => clearTimeout(timeoutId);
-    } else {
-      setOpenDrawer(false);
-      const timeoutId = setTimeout(() => {
-        setCloseDrawer(true);
-      }, 220);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [isOpen]);
-
-  if (closeDrawer) {
-    return null;
+const slideUp = keyframes`
+  0% {
+    transform: translateY(100%);
   }
+  100% {
+    transform: translateY(0);
+  }
+`;
 
-  return (
-    <Wrapper
-      dynamicHeight={wrapperHeight}
-      style={{
-        background: bg ? bg : theme.neutralColor.bgMask,
-      }}
-    >
-      <Col
-        h={h}
-        j="center"
-        a="end"
-        style={{
-          transform: openDrawer ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 0.3s ease",
-        }}
-      >
-        {children}
-      </Col>
-    </Wrapper>
-  );
-};
+const slideDown = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+`;
 
-const Wrapper = styled(Box)<{ dynamicHeight: string }>`
-  width: 100%;
+const DrawerContainer = styled(Box)<{ bg: string }>`
   position: fixed;
-  display: flex;
-
-  flex-direction: column;
-  justify-content: end;
-  height: ${({ dynamicHeight }) => dynamicHeight};
   left: 0;
   bottom: 0;
   z-index: 9;
+  background: ${({ bg }) => bg};
 `;
+
+const AnimatedCol = styled(Col)<{ open: boolean }>`
+  animation: ${(props) => (props.open ? slideUp : slideDown)} 0.3s forwards;
+`;
+
+const Drawer: React.FC<IDrawer> = ({
+  bg,
+  children,
+  isOpen,
+  h = "90%",
+  j = "end",
+}) => {
+  const theme = useTheme();
+
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+  const [renderDrawer, setRenderDrawer] = useState(false);
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setRenderDrawer(true);
+      setIsOpenDrawer(true);
+    } else {
+      setIsOpenDrawer(false);
+    }
+  }, [isOpen]);
+
+  const handleAnimationEnd = () => {
+    console.log("Animation ended");
+    if (isOpen) {
+      setOpened(true);
+    } else {
+      setOpened(false);
+      setRenderDrawer(false);
+    }
+  };
+
+  const backgroundColor =
+    opened && isOpen ? bg || theme.neutralColor.bgMask : "transparent";
+
+  return (
+    <>
+      {renderDrawer ? (
+        <DrawerContainer j="end" a="end" h="100%" bg={backgroundColor}>
+          <AnimatedCol
+            h={h}
+            j={j}
+            open={isOpenDrawer}
+            onAnimationEnd={handleAnimationEnd}
+          >
+            {children}
+          </AnimatedCol>
+        </DrawerContainer>
+      ) : null}
+    </>
+  );
+};
 
 export default Drawer;
