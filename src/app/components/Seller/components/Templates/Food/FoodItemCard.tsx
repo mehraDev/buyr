@@ -1,93 +1,192 @@
 import { IProductFood } from "app/interfaces";
+import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { Box, Col, Img, Row, Text } from "ui/basic";
+
+import Button from "ui/Button";
+import { IVariant } from "app/interfaces/Shop/product";
+import DrawerPreviewProduct from "../../DrawerPreviewProduct/DrawerPreviewProduct";
 
 export enum EItemCardFood {
   Card = "card",
   Strip = "strip",
   Preview = "preview",
-  ImageOnly = "imageonly",
 }
 export interface IItemFoodCard {
   item: IProductFood;
-  onPreview?: (item: IProductFood) => void;
   mode?: EItemCardFood;
+  showCategory?: boolean;
 }
 
 const ItemFoodCard: React.FC<IItemFoodCard> = ({
   item,
-  onPreview,
   mode = EItemCardFood.Strip,
+  showCategory = false,
 }) => {
   const theme = useTheme();
-  const handleItemPreview = () => {
-    if (!onPreview) {
-      console.warn("No Preview Handler Provided");
-    }
-    if (onPreview) {
-      onPreview(item);
-    }
+
+  const [preview, setPreview] = useState<IProductFood | null>(null);
+
+  const handleClosePreview = () => {
+    setPreview(null);
   };
-  const isRow = mode === EItemCardFood.Strip || mode === EItemCardFood.Preview;
+  const handleItemPreview = () => {
+    setPreview(item);
+  };
+
+  const isRow = mode === EItemCardFood.Strip;
+  const { category } = item;
+  const categoryFormat = category ? category?.replaceAll("/", " / ") : "Others";
+  const isCategory = showCategory || mode === EItemCardFood.Preview;
+  const { description, tags } = item;
+
+  const isDescription = mode === EItemCardFood.Preview && description;
   const fd = isRow ? "rr" : "c";
   const previewHandler =
     mode === EItemCardFood.Preview ? undefined : handleItemPreview;
   const detailsGap = isRow ? "0.5rem" : "0.5rem";
-  return (
-    <Box fd={fd} a="start" style={{ gap: isRow ? "1rem" : "" }}>
-      {item.image ? (
-        <Row w="80%" h="7rem">
-          <Img
-            onClick={previewHandler}
-            src={item.image}
-            style={{
-              border: `1px solid ${theme.neutralColor.borderSecondary}`,
-              borderRadius: "8px",
-              overflow: "hidden",
-              cursor: "pointer",
-            }}
-            alt={item.name}
-            br="0.5rem"
-          />
-        </Row>
-      ) : null}
+  const isVeg = item.veg || item.veg !== false;
+  const imgWidth = mode === EItemCardFood.Preview ? "100%" : "62%";
+  const imgHeight = mode === EItemCardFood.Preview ? "100%" : "100%";
+  const detailsPadding =
+    mode === EItemCardFood.Preview ? "1rem 0.5rem" : "0.5rem 0 0 ";
+  const imageRadius = mode === EItemCardFood.Preview ? "8px 8px 0 0 " : "20px";
 
-      <Col j="center" style={{ gap: detailsGap }}>
-        <Row a="center">
+  const defaultVariant = item.variants
+    ? item.variants.find((variant) => variant.default) || item.variants[0]
+    : null;
+
+  const [selectedVariant, setSelectedVariant] = useState<IVariant | null>(
+    defaultVariant
+  );
+
+  const handleVariantClick = (variant: IVariant) => {
+    setSelectedVariant(variant);
+  };
+  return (
+    <>
+      <Box fd={fd} a="start" style={{ gap: isRow ? "1rem" : "" }}>
+        {item.image ? (
           <Row
-            w="initial"
-            p="2px"
-            a="center"
+            w={imgWidth}
+            h={imgHeight}
+            style={{ borderRadius: imageRadius }}
+            onClick={previewHandler}
+          >
+            <Img
+              src={item.image}
+              alt={item.name}
+              br={imageRadius}
+              style={{ cursor: "pointer" }}
+            />
+          </Row>
+        ) : null}
+        <Col p={detailsPadding} j="center" style={{ gap: detailsGap }}>
+          <Col onClick={previewHandler} style={{ gap: detailsGap }}>
+            <Row a="center" style={{ gap: "0.5rem" }}>
+              <Row
+                w="initial"
+                p="2px"
+                a="center"
+                style={{
+                  border: "1px solid " + (isVeg ? "green" : "#da0828"),
+                  borderRadius: "3px",
+                }}
+              >
+                {isVeg ? <VegIcon /> : <NonVegIcon />}
+              </Row>
+              <Row style={{ gap: "0.5rem" }}>
+                {tags &&
+                  tags.map((tag, index) => (
+                    <Row
+                      a="center"
+                      key={index}
+                      p="2px 8px"
+                      w="initial"
+                      style={{
+                        background: tag.color
+                          ? tag.color
+                          : theme.brandColor.pink,
+                        gap: "0.5rem",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      <Text
+                        tt="upp"
+                        s="10"
+                        w={4}
+                        c={theme.neutralColor.bgContainer}
+                      >
+                        {tag.name}
+                      </Text>
+                    </Row>
+                  ))}
+              </Row>
+            </Row>
+            {isCategory ? (
+              <Text
+                tt="cap"
+                s="12"
+                w={6}
+                c={theme.neutralColor.textTertiary}
+              >{`In ${categoryFormat}`}</Text>
+            ) : null}
+            <Text
+              tt="cap"
+              w={5}
+              s="16"
+              c={theme.neutralColor.text}
+              style={{ cursor: "pointer" }}
+            >
+              {item.name}
+            </Text>
+            <Text w={5} s="14" c={theme.neutralColor.textSecondary}>
+              &#x20B9; {selectedVariant ? selectedVariant.price : item.price}
+            </Text>
+          </Col>
+          {mode === EItemCardFood.Preview &&
+          item.variants &&
+          item.variants.length ? (
+            <Row a="center" style={{ gap: "1rem" }}>
+              {item.variants.map((variant) => (
+                <Button
+                  type="button"
+                  variant={
+                    selectedVariant?.variantId === variant.variantId
+                      ? "primary"
+                      : "secondary"
+                  }
+                  size="small"
+                  padding="4px 6px"
+                  onClick={() => handleVariantClick(variant)}
+                >
+                  {variant.name}
+                </Button>
+              ))}
+            </Row>
+          ) : null}
+          {isDescription && (
+            <Row>
+              <Text s="12" w={5} c={theme.neutralColor.textTertiary}>
+                {description}
+              </Text>
+            </Row>
+          )}
+        </Col>
+      </Box>
+      <DrawerPreviewProduct isOpen={!!preview} onClose={handleClosePreview}>
+        {preview && (
+          <Row
             style={{
-              border: "1px solid " + (item.veg ? "green" : "#da0828"),
-              borderRadius: "3px",
+              boxShadow: theme.shadow.boxShadowSecondary,
+              borderRadius: "8px",
             }}
           >
-            {item.veg ? <VegIcon /> : <NonVegIcon />}
-          </Row>
-        </Row>
-        <Text
-          tt="cap"
-          onClick={previewHandler}
-          w={6}
-          s="14"
-          c={theme.neutralColor.text}
-          style={{ cursor: "pointer" }}
-        >
-          {item.name}
-        </Text>
-        <Text w={6} s="12" c={theme.neutralColor.textSecondary}>
-          &#x20B9; {item.price}
-        </Text>
-        {item.description && (
-          <Row>
-            <Text s="12" w={5} c={theme.neutralColor.textTertiary}>
-              {item.description}
-            </Text>
+            <ItemFoodCard item={preview} mode={EItemCardFood.Preview} />
           </Row>
         )}
-      </Col>
-    </Box>
+      </DrawerPreviewProduct>
+    </>
   );
 };
 

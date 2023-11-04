@@ -2,15 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CSSProperties, useEffect, useState } from "react";
 import {
   faArrowUpFromBracket,
-  faLeaf,
   faSortUp,
-  faTimes,
-  faSearch,
-  faDiamond,
   faImage,
   faThLarge,
   faList,
-  faPhone,
   faChevronLeft,
   faRing,
   faCircleExclamation,
@@ -24,22 +19,30 @@ import {
   faEllipsisVertical,
   faChevronDown,
   faChevronUp,
+  faLeaf,
+  faDiamond,
+  faPhone,
+  faTimes,
+  faSearch,
   faSortDown,
   faLocation,
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
-  faInstagram,
   faFacebook,
+  faInstagram,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 
 export enum IconName {
-  Search = "search",
+  Crop = "crop",
+  Check = "check",
   Clear = "clear",
   Notification = "notification",
+
   LeftArrow = "leftArrow",
+
   RightArrow = "rightArrow",
   Bars = "bars",
   Ellipsis = "ellipsis",
@@ -73,7 +76,9 @@ interface Icons {
 
 export const icons: Icons = {
   notification: faBell,
+  leaf: faLeaf,
   leftArrow: faArrowLeft,
+  location: faLocation,
   rightArrow: faArrowRight,
   bars: faBars,
   ellipsis: faEllipsisVertical,
@@ -94,12 +99,10 @@ export const icons: Icons = {
   list: faList,
   diamond: faDiamond,
   downlaod: faDownload,
-  location: faLocation,
   downArrow: faSortDown,
   clear: faTimes,
   search: faSearch,
   upArrow: faSortUp,
-  leaf: faLeaf,
   share: faArrowUpFromBracket,
 };
 
@@ -110,15 +113,18 @@ interface IconProps {
   width?: number;
   height?: number;
   borderRadius?: number;
+  onBlur?: () => void;
   onClick?: () => void;
   isHoverable?: boolean;
   clickEffect?: boolean;
   padding?: string;
   style?: CSSProperties;
+  br?: string;
 }
 
 const Icon: React.FC<IconProps> = ({
   name,
+  br,
   className,
   color,
   width,
