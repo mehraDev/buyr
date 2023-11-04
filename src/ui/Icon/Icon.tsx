@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CSSProperties, useEffect, useState } from "react";
 import {
+  faArrowUpFromBracket,
   faLeaf,
   faSortUp,
   faTimes,
@@ -25,6 +26,7 @@ import {
   faChevronUp,
   faSortDown,
   faLocation,
+  faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -57,10 +59,12 @@ export enum IconName {
   Grid = "grid",
   List = "list",
   Diamond = "diamond",
+  Download = "downlaod",
   Location = "location",
   DownArrow = "downArrow",
   UpArrow = "upArrow",
   Leaf = "leaf",
+  Share = "share",
 }
 
 interface Icons {
@@ -89,12 +93,14 @@ export const icons: Icons = {
   grid: faThLarge,
   list: faList,
   diamond: faDiamond,
+  downlaod: faDownload,
   location: faLocation,
   downArrow: faSortDown,
   clear: faTimes,
   search: faSearch,
   upArrow: faSortUp,
   leaf: faLeaf,
+  share: faArrowUpFromBracket,
 };
 
 interface IconProps {

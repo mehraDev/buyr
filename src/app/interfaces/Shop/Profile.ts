@@ -1,9 +1,10 @@
 export interface ISellerProfile {
-  id: string;
+  user: string;
   name: string;
   address: string;
   about: string[];
   type: string;
+  id: string;
 }
 
 export interface IContactItem {

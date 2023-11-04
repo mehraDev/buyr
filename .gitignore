@@ -1,1 +1,26 @@
-node_modules
+node_modules/
+
+# Firebase cache
+.firebase/
+.github/workflows
+
+# Build directory
+build/
+
+# Logs
+npm-debug.log*
+
+# Editor directories and files
+.DS_Store
+*.sublime*
+.vscode/
+*.swp
+*.swo
+*.idea/
+
+# Environment variables
+.env
+
+# Other
+*.cache
+*.lock

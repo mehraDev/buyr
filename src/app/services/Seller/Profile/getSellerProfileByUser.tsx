@@ -5,7 +5,7 @@ import {
 } from "app/services/constants/Constants";
 import searchCollection from "firebaseServices/firestore/searchCollection";
 
-async function getSellerDocumentByUsername(
+async function getSellerProfileByUserName(
   username: string
 ): Promise<ISellerProfile | null> {
   try {
@@ -18,6 +18,7 @@ async function getSellerDocumentByUsername(
     if (sellerDocuments.length > 0) {
       const sellerDocument = sellerDocuments[0];
       const profile = sellerDocument.data() as ISellerProfile;
+      profile.id = sellerDocument.id;
       return profile;
     } else {
       return null;
@@ -28,4 +29,4 @@ async function getSellerDocumentByUsername(
   }
 }
 
-export default getSellerDocumentByUsername;
+export default getSellerProfileByUserName;

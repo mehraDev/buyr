@@ -1,60 +1,65 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import supportedShopsList from "app/components/ProductCatalog";
+
 import { ISellerProfile } from "app/interfaces";
-import SplashScreen from "app/components/ProductCatalog/SplashScreen/SplashScreen";
+import SplashScreen from "app/components/Seller/components/SplashScreen/SplashScreen";
 import getSellerProfileByUser from "app/services/Seller/Profile/getSellerProfileByUser";
+import SellerNotFoundPage from "./SellerNotFoundPage";
+import { useNavigate } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
+import getSellerComponent from "app/components/Seller";
 
 const Seller: React.FC = () => {
   const { sellerUserId } = useParams();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<ISellerProfile | null>(null);
-
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchSellerProfile = async () => {
       if (sellerUserId) {
         try {
           const sellerProfile = await getSellerProfileByUser(sellerUserId);
+
           setProfile(sellerProfile);
-        } catch (error) {
-          console.error("Failed to fetch seller profile:", error);
+        } catch (err) {
+          setError("Failed to fetch seller profile. Please try again later.");
+        } finally {
+          setLoading(false);
         }
       }
     };
     fetchSellerProfile();
   }, [sellerUserId]);
-  // useEffect(() => {
-  //   const fetchShopType = async () => {
-  //     if (sellerId) {
-  //       try {
-  //         const profile = await getProfileById(sellerId);
-  //         if (profile) {
-  //           setProfile(profile);
-  //         } else {
-  //           console.log("Shop Type not found for seller:", sellerId);
-  //         }
-  //       } catch (error) {
-  //         console.error("Failed to fetch shop type:", error);
-  //       }
-  //     }
-  //   };
 
-  //   fetchShopType();
-  // }, [sellerId]);
-  if (!profile) {
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+
+  if (loading) {
     return <SplashScreen />;
   }
 
-  const StaticShop = supportedShopsList[profile.type];
+  if (error) {
+    return (
+      <ErrorPage
+        title="Something Went Wrong"
+        message="Sorry, something went wrong while processing your request."
+        onHomeClick={handleHomeClick}
+      />
+    );
+  }
+
+  if (!profile) {
+    return <SellerNotFoundPage onHomeClick={handleHomeClick} />;
+  }
+
+  const StaticShop = getSellerComponent(profile.type);
 
   if (!StaticShop) {
     return <div>Invalid Shop Type</div>;
   }
-  console.log(profile);
-  return (
-    <div>
-      <StaticShop profile={profile} />
-    </div>
-  );
+  return <StaticShop profile={profile} />;
 };
 
 export default Seller;

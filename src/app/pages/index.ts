@@ -1,4 +1,4 @@
 import HomePage from "./HomePage";
-import MenuHost from "./MenuHost";
+import Seller from "./Seller";
 
-export {HomePage,MenuHost}
+export { HomePage, Seller };

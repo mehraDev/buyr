@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { InputWrapper, Label } from "./styles";
 import { IInput } from "./interface";
@@ -13,6 +13,7 @@ interface IInputSearch extends IInput {
   borderRadius?: string;
   error?: string;
   onClear: () => void;
+  isActive?: boolean;
 }
 
 const Input = styled.input<{
@@ -51,13 +52,20 @@ const InputSearch: React.FC<IInputSearch> = ({
   borderRadius,
   error,
   onClear,
+  isActive,
 }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
-
+  // const inputRef = useRef<HTMLInputElement | null>(null);
+  // useEffect(() => {
+  //   if (isActive && inputRef.current) {
+  //     inputRef.current.focus();
+  //     inputRef.current.click();
+  //   }
+  // }, [isActive]);
   const handleInputFocus = () => {
     setIsInputFocused(true);
   };
@@ -80,7 +88,9 @@ const InputSearch: React.FC<IInputSearch> = ({
       )}
       <Row a="center" style={{ position: "relative" }}>
         <Input
+          // ref={inputRef}
           type="text"
+          autoFocus={isActive}
           value={value}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
@@ -90,7 +100,8 @@ const InputSearch: React.FC<IInputSearch> = ({
           required={required}
           borderColor={borderColor}
           borderRadius={borderRadius}
-          isInputFocused={isInputFocused} // Pass the isInputFocused state as a prop
+          isInputFocused={isInputFocused}
+          inputMode="text"
         />
         {value !== "" && (
           <ClearIcon

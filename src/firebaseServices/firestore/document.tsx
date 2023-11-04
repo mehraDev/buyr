@@ -10,7 +10,7 @@ async function createDocument(
     const documentRef = doc(db, location, documentId);
     const documentData = data || {};
     await setDoc(documentRef, documentData);
-    console.log(`Document created successfully at: ${location} ${documentId}`);
+    // console.log(`Document created successfully at: ${location} ${documentId}`);
   } catch (error: any) {
     console.error("Error creating document:", error);
     throw new Error("Failed to create document");
@@ -40,7 +40,7 @@ async function fetchDocument(
             filteredData[field] = documentData[field];
           }
         }
-        console.log("Filtered Document Data:", filteredData);
+        // console.log("Filtered Document Data:", filteredData);
         return filteredData;
       } else {
         return documentData as DocumentFields;

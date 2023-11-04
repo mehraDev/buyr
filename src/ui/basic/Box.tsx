@@ -19,9 +19,10 @@ export interface IBox {
   h?: string;
   p?: string | number | number[];
   m?: string | number | number[];
-  fd?: "r" | "c";
+  fd?: "r" | "c" | "rr";
   j?: "start" | "end" | "center" | "between" | "around" | "evenly";
   a?: "start" | "end" | "center" | "stretch";
+  br?: string;
 }
 
 const Box = styled.div<IBox>`
@@ -43,8 +44,9 @@ const Box = styled.div<IBox>`
       return margin;
     }
   }};
+  border-radius: ${(props) => (props.br ? props.br : "")};
   display: flex;
-  flex-direction: ${(props) => (props.fd === "c" ? "column" : "row")};
+  flex-direction: ${(props) => flexDirectionMap[props.fd || "r"]};
   justify-content: ${(props) => {
     switch (props.j) {
       case "start":
@@ -93,4 +95,9 @@ const Col = styled(Box)<IColumn>`
   flex-direction: column;
 `;
 
+const flexDirectionMap: Record<string, string> = {
+  r: "row",
+  c: "column",
+  rr: "row-reverse",
+};
 export { Row, Col };

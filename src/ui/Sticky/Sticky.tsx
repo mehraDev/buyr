@@ -7,7 +7,7 @@ interface ISticky {
   stickyStyle?: React.CSSProperties;
   style?: React.CSSProperties;
   parentRef?: React.RefObject<HTMLDivElement>;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement>;
   height?: number;
   onStickyChange?: () => void;
 }
@@ -30,37 +30,40 @@ const Sticky: React.FC<ISticky> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const container = containerRef.current; // Copy containerRef.current to a variable
-
-      if (container) {
-        const currentScrollY = container.scrollTop || 0;
-        setScrollDirection(
-          prevScrollY.current < currentScrollY ? "down" : "up"
-        );
-        prevScrollY.current = currentScrollY;
-
-        const newIsSticky = currentScrollY >= at;
-        setIsSticky(newIsSticky);
-        if (newIsSticky !== isSticky && onStickyChange) {
-          onStickyChange();
-        }
+      const container = containerRef?.current || window;
+      const currentScrollY =
+        container instanceof Window
+          ? container.scrollY
+          : container.scrollTop || 0;
+      setScrollDirection(prevScrollY.current < currentScrollY ? "down" : "up");
+      prevScrollY.current = currentScrollY;
+      const newIsSticky = currentScrollY >= at;
+      setIsSticky(newIsSticky);
+      if (newIsSticky !== isSticky && onStickyChange) {
+        onStickyChange();
       }
     };
 
-    if (containerRef.current) {
-      containerRef.current.addEventListener("scroll", handleScroll);
+    let cleanup;
+    const currentContainer = containerRef?.current;
+    if (currentContainer) {
+      currentContainer.addEventListener("scroll", handleScroll);
+      cleanup = () => {
+        currentContainer.removeEventListener("scroll", handleScroll);
+      };
+    } else {
+      window.addEventListener("scroll", handleScroll);
+      cleanup = () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
     }
 
-    return () => {
-      if (containerRef.current) {
-        containerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
+    return cleanup;
   }, [at, containerRef, isSticky, onStickyChange]);
 
   if (height) {
     return (
-      <Box h={`${height}px`} ref={ref}>
+      <Box style={{ minHeight: `${height}px` }} ref={ref}>
         <Box
           h={`${height}px`}
           style={

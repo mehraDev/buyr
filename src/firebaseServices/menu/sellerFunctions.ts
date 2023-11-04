@@ -1,21 +1,21 @@
-import {collection, addDoc, doc, getDoc, setDoc} from 'firebase/firestore'
-import {db, auth} from '../firebase'
-import addRegistrationDetailsToSeller from '../Registration/addRegistrationDetailsToSeller'
-import addLicenseDetailsToSeller from '../Registration/addLicense'
+import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { db, auth } from "../firebase";
+import addRegistrationDetailsToSeller from "../Registration/addRegistrationDetailsToSeller";
+import addLicenseDetailsToSeller from "../Registration/addLicense";
 // Function to store menu for seller ID
 const loadMenu = async (sellerId: string, menuData: any) => {
   // Get reference to seller's menu collection
-  console.log('seller id is ', sellerId)
-  const menuRef = collection(db, 'sellers', sellerId, 'menu')
+  // console.log('seller id is ', sellerId)
+  const menuRef = collection(db, "sellers", sellerId, "menu");
 
   try {
     // Add menu data to Firestore
-    await addDoc(menuRef, menuData)
-    console.log('Menu stored successfully!')
+    await addDoc(menuRef, menuData);
+    // console.log("Menu stored successfully!");
   } catch (error) {
-    console.error('Error storing menu:', error)
+    console.error("Error storing menu:", error);
   }
-}
+};
 
 // const createSellerIfNotExists = async (authId: string): Promise<string> => {
 //     console.log('creating seller ', authId);
@@ -38,17 +38,17 @@ const loadMenu = async (sellerId: string, menuData: any) => {
 
 const loadMenuFromCurrentSeller = async (menuData: any) => {
   try {
-    const currentUser = auth.currentUser
+    const currentUser = auth.currentUser;
     if (!currentUser) {
-      throw new Error('User not authenticated')
+      throw new Error("User not authenticated");
     }
 
-    const sellerId = currentUser.uid
+    const sellerId = currentUser.uid;
 
-    await addRegistrationDetailsToSeller(sellerId)
+    await addRegistrationDetailsToSeller(sellerId);
   } catch (error) {
-    console.error('Error storing menu:', error)
+    console.error("Error storing menu:", error);
   }
-}
+};
 
-export {loadMenuFromCurrentSeller}
+export { loadMenuFromCurrentSeller };
