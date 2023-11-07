@@ -3,7 +3,7 @@ import Icon, { IconName } from "ui/Icon";
 import ContactPopup, {
   IContactButtonOverlay,
 } from "../ContactPopup/ContactPopup";
-import { Col } from "ui/basic";
+import { Col, Row } from "ui/basic";
 import { ISellerContacts } from "app/interfaces/Shop/Contacts";
 
 interface IContactCard {
@@ -24,10 +24,10 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
   }
   const { ph: phone, wa, fb, insta } = contacts;
 
-  const phoneColor = "#000"; //"#0762e1";
-  const waColor = "#000"; //"#0ba544";
-  const fbColor = "#000"; // "#1166d5";
-  const igColor = "#000"; //"#ed1a60";
+  const phoneColor = "#fd8a94"; //"#0762e1";
+  const waColor = "#fd8a94"; //"#0ba544";
+  const fbColor = "#fd8a94"; // "#1166d5";
+  const igColor = "#fd8a94"; //"#ed1a60";
 
   const handleContactClick = (index: number) => {
     if (activeOverlay === IconName.Phone) {
@@ -83,10 +83,10 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
   }
 
   return (
-    <Col w="initial" style={{ gap: "8px" }}>
+    <Row w="initial" style={{ gap: "12px" }}>
       {phone.length !== 0 && (
         <Icon
-          borderRadius={3}
+          borderRadius={0.35}
           style={{ border: `1px solid ` }}
           name={IconName.Phone}
           color={phoneColor}
@@ -97,7 +97,7 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
       )}
       {wa.length !== 0 && (
         <Icon
-          borderRadius={3}
+          borderRadius={0.35}
           style={{ border: `1px solid` }}
           name={IconName.Whatsapp}
           width={1}
@@ -108,7 +108,7 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
       )}
       {insta.length !== 0 && (
         <Icon
-          borderRadius={3}
+          borderRadius={0.35}
           style={{ border: `1px solid` }}
           name={IconName.Instagram}
           width={1}
@@ -119,7 +119,7 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
       )}
       {fb.length !== 0 && (
         <Icon
-          borderRadius={3}
+          borderRadius={0.35}
           style={{ border: `1px solid` }}
           name={IconName.Facebook}
           color={fbColor}
@@ -137,7 +137,7 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
           name={activeOverlay}
         />
       )}
-    </Col>
+    </Row>
   );
 };
 

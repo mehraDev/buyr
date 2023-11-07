@@ -112,18 +112,14 @@ const Category: React.FC<ICategoryList> = ({
         j="between"
         onClick={() => categoryToggleHandler()}
         style={{
-          fontFamily: "Raleway",
           background: theme.neutralColor.bgContainer,
+          boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
           cursor: "pointer",
         }}
       >
         <Text
           tt="cap"
-          c={
-            isTopLevel
-              ? theme.neutralColor.text
-              : theme.neutralColor.textSecondary
-          }
+          c={isTopLevel ? "#ffb7bd" : "#ffb7bd"}
           w={isTopLevel ? 6 : 5}
         >
           {categoryNameFormatted}
@@ -145,15 +141,15 @@ const Category: React.FC<ICategoryList> = ({
       </Row>
       {isExpanded && (
         <>
-          <Col p="1rem" style={{ gap: "0" }}>
+          <Col p="1rem 0" style={{ gap: "1rem" }}>
             {categoryProducts.map((product, index) => (
               <Row
                 key={index}
-                p={"1rem 0.5rem "}
-                br="0"
+                p={"1rem "}
+                br="0.5rem"
                 style={{
-                  borderBottom: `1px dashed #c5c5c5`,
                   background: theme.neutralColor.bgContainer,
+                  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
                 }}
               >
                 <ItemFoodCard item={{ ...product }} key={product.id} />

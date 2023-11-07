@@ -8,6 +8,13 @@ import SellerNotFoundPage from "./SellerNotFoundPage";
 import { useNavigate } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 import getSellerComponent from "app/components/Seller";
+import theme from "ui/Utils/Media/Theme/theme";
+import { ThemeProvider } from "styled-components";
+
+const shopTheme = {
+  ...theme,
+  specific: {},
+};
 
 const Seller: React.FC = () => {
   const { sellerUserId } = useParams();
@@ -59,7 +66,12 @@ const Seller: React.FC = () => {
   if (!StaticShop) {
     return <div>Invalid Shop Type</div>;
   }
-  return <StaticShop profile={profile} />;
+
+  return (
+    <ThemeProvider theme={shopTheme}>
+      <StaticShop profile={profile} />
+    </ThemeProvider>
+  );
 };
 
 export default Seller;

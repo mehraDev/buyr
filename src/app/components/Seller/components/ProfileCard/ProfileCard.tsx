@@ -62,27 +62,16 @@ const ProfileCard: React.FC<IProfileCard> = ({ contacts, logo, profile }) => {
       )}
       <Col
         w="initial"
-        style={{ gap: "8px", position: "absolute", right: "1rem", top: "3rem" }}
+        style={{
+          gap: "12px",
+        }}
       >
         <ContactBar contacts={contacts} />
       </Col>
     </>
   );
 
-  return (
-    <Col
-      a="center"
-      p={"1rem"}
-      style={{
-        gap: "0.5rem",
-        background: theme.neutralColor.bgContainer,
-        boxShadow: "rgba(0, 0, 0, 0.069) 0px 1px 4px",
-        position: "relative",
-      }}
-    >
-      {profileBasic}
-    </Col>
-  );
+  return <>{profileBasic}</>;
 };
 
 export default ProfileCard;

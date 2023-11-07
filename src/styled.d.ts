@@ -2,20 +2,6 @@ import { DefaultTheme as StyledDefaultTheme } from "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme extends StyledDefaultTheme {
-    palette: {
-      pallete1: {
-        deepBlue: string;
-        offWhite: string;
-        mutedRed: string;
-        slateGray: string;
-        teal: string;
-        lightGray: string;
-        darkGray: string;
-        successGreen: string;
-        warningYellow: string;
-        infoBlue: string;
-      };
-    };
     brandColor: {
       primaryBg: string;
       primaryBgHover: string;

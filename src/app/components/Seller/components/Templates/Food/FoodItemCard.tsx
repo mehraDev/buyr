@@ -46,11 +46,11 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
     mode === EItemCardFood.Preview ? undefined : handleItemPreview;
   const detailsGap = isRow ? "0.5rem" : "0.5rem";
   const isVeg = item.veg || item.veg !== false;
-  const imgWidth = mode === EItemCardFood.Preview ? "100%" : "62%";
+  const imgWidth = mode === EItemCardFood.Preview ? "100%" : "10rem";
   const imgHeight = mode === EItemCardFood.Preview ? "100%" : "100%";
   const detailsPadding =
     mode === EItemCardFood.Preview ? "1rem 0.5rem" : "0.5rem 0 0 ";
-  const imageRadius = mode === EItemCardFood.Preview ? "8px 8px 0 0 " : "20px";
+  const imageRadius = mode === EItemCardFood.Preview ? "8px 8px 0 0 " : "12px";
 
   const defaultVariant = item.variants
     ? item.variants.find((variant) => variant.default) || item.variants[0]
@@ -131,16 +131,10 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
                 c={theme.neutralColor.textTertiary}
               >{`In ${categoryFormat}`}</Text>
             ) : null}
-            <Text
-              tt="cap"
-              w={5}
-              s="16"
-              c={theme.neutralColor.text}
-              style={{ cursor: "pointer" }}
-            >
+            <Text tt="cap" w={6} s="16" style={{ cursor: "pointer" }}>
               {item.name}
             </Text>
-            <Text w={5} s="14" c={theme.neutralColor.textSecondary}>
+            <Text w={4} s="16" c="#fd8a94">
               &#x20B9; {selectedVariant ? selectedVariant.price : item.price}
             </Text>
           </Col>
@@ -167,18 +161,23 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
           ) : null}
           {isDescription && (
             <Row>
-              <Text s="12" w={5} c={theme.neutralColor.textTertiary}>
+              <Text s="12" w={4}>
                 {description}
               </Text>
             </Row>
           )}
         </Col>
       </Box>
-      <DrawerPreviewProduct isOpen={!!preview} onClose={handleClosePreview}>
+      <DrawerPreviewProduct
+        bg="#fff2f3"
+        isOpen={!!preview}
+        onClose={handleClosePreview}
+      >
         {preview && (
           <Row
             style={{
               boxShadow: theme.shadow.boxShadowSecondary,
+              background: theme.neutralColor.bgContainer,
               borderRadius: "8px",
             }}
           >

@@ -14,7 +14,6 @@ import { getSellerLogoByID } from "app/services/Seller/Profile";
 import { Drawer } from "ui/Drawer";
 import { SearchCard } from "ui/Search";
 import ItemFoodCard from "./FoodItemCard";
-
 interface IShopTemplateFood {
   profile: ISellerProfile;
 }
@@ -164,34 +163,30 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
           height: containerHeight,
         }}
       >
-        <Col style={{}}>
+        <Col style={{ background: "#fff2f3" }}>
           <MenuHeader
-            name={shopName}
+            name={activeCategory}
             onSearch={handleShowSearch}
             stickyPointHeader={stickyPointHeader}
           />
-          <Row
-            style={{ position: "fixed", top: MENU_HEADER_HEIGHT + 12 }}
-            j="center"
-          >
-            {activeCategory && (
-              <Row
-                p="0.5rem"
-                w="initial"
-                br="6px"
-                style={{ background: theme.neutralColor.bgMask }}
-              >
-                <Text s="12" c="white" tt="cap">
-                  {activeCategory}
-                </Text>
-              </Row>
-            )}
-          </Row>
-          <Box
-            ref={profileCardRef}
-            style={{ background: theme.neutralColor.bgContainer }}
-          >
-            <ProfileCard contacts={contacts} profile={profile} logo={logoUrl} />
+          <Box ref={profileCardRef} p={"1rem"}>
+            <Col
+              a="center"
+              p={"2rem"}
+              br="16px"
+              style={{
+                gap: "0.5rem",
+                background: theme.neutralColor.bgContainer,
+                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
+                position: "relative",
+              }}
+            >
+              <ProfileCard
+                contacts={contacts}
+                profile={profile}
+                logo={logoUrl}
+              />
+            </Col>
           </Box>
 
           <FoodMenu
