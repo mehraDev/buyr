@@ -68,6 +68,7 @@ export enum IconName {
   UpArrow = "upArrow",
   Leaf = "leaf",
   Share = "share",
+  Search = "search",
 }
 
 interface Icons {

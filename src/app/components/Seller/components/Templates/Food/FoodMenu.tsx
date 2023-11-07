@@ -45,31 +45,33 @@ const FoodMenu: React.FC<IFoodMenu> = ({
   });
 
   return (
-    <>
+    <Col p={"1rem"}>
       <Col
-        m={"1rem 0"}
-        p={"0 0rem 5rem"}
+        p={"0rem 0rem 5rem"}
         style={{
-          background: theme.neutralColor.bgContainer,
           boxShadow: "rgba(0, 0, 0, 0.069) 0px 1px 4px",
+          gap: "1px",
         }}
       >
         <Row
-          p="1rem "
-          a="start"
+          p="1rem"
+          a="center"
           style={{
-            borderBottom: `1px solid ${theme.neutralColor.borderSecondary}`,
+            borderRadius: "8px 8px 0 0",
+            background: theme.neutralColor.bgContainer,
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
           }}
-          j="center"
+          j="between"
         >
-          <Text s="16" w={7} c={theme.neutralColor.text}>
+          <Text s="16" w={6} c={theme.neutralColor.text}>
             Menu
           </Text>
-          <Row w="initial" style={{ position: "absolute", right: "1rem" }}>
+          <Row w="initial">
             <Icon
               name={IconName.Search}
               onClick={() => onSearch()}
               borderRadius={0}
+              color="#ffb7bd"
             />
           </Row>
         </Row>
@@ -79,7 +81,7 @@ const FoodMenu: React.FC<IFoodMenu> = ({
           onCategoryPositionsUpdate={onCategoryPositionsUpdate}
         />
       </Col>
-    </>
+    </Col>
   );
 };
 

@@ -33,8 +33,9 @@ const MenuButton: React.FC<IMenuButton> = ({
       <Box
         onClick={() => setIsMenu(!isMenu)}
         style={{
-          background: theme.neutralColor.text,
+          background: "#f65d6b",
           borderRadius: "6px",
+          boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.2)",
           position: "fixed",
           bottom: "1rem",
           zIndex: isMenu ? 10 : "",

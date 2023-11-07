@@ -8,12 +8,14 @@ interface IDrawerPreviewProduct {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  bg?: string;
 }
 
 const DrawerPreviewProduct: React.FC<IDrawerPreviewProduct> = ({
   isOpen,
   onClose,
   children,
+  bg,
 }) => {
   const theme = useTheme();
 
@@ -32,7 +34,7 @@ const DrawerPreviewProduct: React.FC<IDrawerPreviewProduct> = ({
       <Col
         p="0.75rem"
         br="6px 6px 0 0"
-        style={{ background: theme.neutralColor.bgContainer }}
+        style={{ background: bg ? bg : theme.neutralColor.bgContainer }}
       >
         {children}
       </Col>

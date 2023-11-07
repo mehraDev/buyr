@@ -9,8 +9,6 @@ const brandColor = {
   primaryTextHover: "#f5477b",
   primaryText: "#e91e63",
   primaryTextActive: "#c21051",
-
-  // color: Pink
   pinkBg: "#fdeaf1",
   pinkBgHover: "#f7c7dc",
   pinkBorder: "#f199b1",
