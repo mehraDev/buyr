@@ -26,7 +26,7 @@ const Input = styled.input<{
   font-weight: 400;
   border-width: 1px;
   padding: 8px 0px 8px 28px;
-  font-size: 16px;
+  font-size: 14px;
   width: 100%;
   position: relative;
   border-color: ${({ theme }) => theme.neutralColor.border};

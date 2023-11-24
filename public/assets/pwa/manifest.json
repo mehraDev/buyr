@@ -1,0 +1,20 @@
+{
+  "short_name": "TastyTriangle",
+  "name": "Tasty Triangle Restaurant",
+  "icons": [
+    {
+      "src": "https://firebasestorage.googleapis.com/v0/b/cloudyug-f2fe4.appspot.com/o/s%2Fsellers%2Fr5pAqsfFprd2QSqq1oQgWYI4QGc2%2Flogo?alt=media",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://firebasestorage.googleapis.com/v0/b/cloudyug-f2fe4.appspot.com/o/s%2Fsellers%2Fr5pAqsfFprd2QSqq1oQgWYI4QGc2%2Flogo?alt=media",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/tastytriangle",
+  "display": "standalone",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF"
+}

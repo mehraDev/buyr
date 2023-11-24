@@ -3,7 +3,7 @@ import Icon, { IconName } from "ui/Icon";
 import ContactPopup, {
   IContactButtonOverlay,
 } from "../ContactPopup/ContactPopup";
-import { Col, Row } from "ui/basic";
+import { Row } from "ui/basic";
 import { ISellerContacts } from "app/interfaces/Shop/Contacts";
 
 interface IContactCard {
@@ -24,10 +24,10 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
   }
   const { ph: phone, wa, fb, insta } = contacts;
 
-  const phoneColor = "#fd8a94"; //"#0762e1";
-  const waColor = "#fd8a94"; //"#0ba544";
-  const fbColor = "#fd8a94"; // "#1166d5";
-  const igColor = "#fd8a94"; //"#ed1a60";
+  const phoneColor = "#2a62f4";
+  const waColor = "#009688";
+  const fbColor = "#1976d2";
+  const igColor = "#e91e63";
 
   const handleContactClick = (index: number) => {
     if (activeOverlay === IconName.Phone) {
@@ -81,51 +81,55 @@ const ContactBar: React.FC<IContactCard> = ({ contacts }) => {
       iconName: IconName.Instagram,
     }));
   }
+  const border = `1px solid #d9d9e3`;
 
   return (
     <Row w="initial" style={{ gap: "12px" }}>
       {phone.length !== 0 && (
         <Icon
+          padding="8px"
           borderRadius={0.35}
-          style={{ border: `1px solid ` }}
+          style={{ border: border }}
           name={IconName.Phone}
           color={phoneColor}
-          width={1}
-          height={1}
+          width={1.25}
+          height={1.25}
           onClick={() => handleIconClick(IconName.Phone)}
         />
       )}
       {wa.length !== 0 && (
         <Icon
+          padding="8px"
           borderRadius={0.35}
-          style={{ border: `1px solid` }}
+          style={{ border: border }}
           name={IconName.Whatsapp}
-          width={1}
-          height={1}
+          width={1.25}
+          height={1.25}
           color={waColor}
           onClick={() => handleIconClick(IconName.Whatsapp)}
         />
       )}
       {insta.length !== 0 && (
         <Icon
+          padding="8px"
           borderRadius={0.35}
-          style={{ border: `1px solid` }}
+          style={{ border: border }}
           name={IconName.Instagram}
-          width={1}
-          height={1}
+          width={1.25}
+          height={1.25}
           color={igColor}
           onClick={() => handleIconClick(IconName.Instagram)}
         />
       )}
       {fb.length !== 0 && (
         <Icon
+          padding="8px"
           borderRadius={0.35}
-          style={{ border: `1px solid` }}
+          style={{ border: border }}
           name={IconName.Facebook}
           color={fbColor}
-          width={1}
-          height={1}
-          padding="4px"
+          width={1.25}
+          height={1.25}
           onClick={() => handleIconClick(IconName.Facebook)}
         />
       )}

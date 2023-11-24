@@ -21,7 +21,6 @@ const CategoryViewer: React.FC<ICategoryviewer> = ({
   const [expandedCategories, setExpandedCategories] = useState<{
     [category: string]: boolean;
   }>({});
-
   useEffect(() => {
     const initialExpandedCategories: { [category: string]: boolean } = {};
     const categorisedProducts = categoriseProducts(products);

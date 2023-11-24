@@ -10,6 +10,7 @@ import ErrorPage from "./ErrorPage";
 import getSellerComponent from "app/components/Seller";
 import theme from "ui/Utils/Media/Theme/theme";
 import { ThemeProvider } from "styled-components";
+import SEOHead from "app/components/Seller/components/SEOHead/SEOHead";
 
 const shopTheme = {
   ...theme,
@@ -69,6 +70,7 @@ const Seller: React.FC = () => {
 
   return (
     <ThemeProvider theme={shopTheme}>
+      <SEOHead profile={profile} />
       <StaticShop profile={profile} />
     </ThemeProvider>
   );

@@ -8,9 +8,7 @@ interface ICategory {
 const MAX_CATEGORY_DEPTH = 3;
 
 function categoriseProducts(products: IProductFood[]): Record<string, ICategory> {
-  const rootCategories: Record<string, ICategory> = {
-    Others: { products: [], subCategories: {} },
-  };
+  const rootCategories: Record<string, ICategory> = {};
 
   for (const product of products) {
     let currentCategories: Record<string, ICategory> = rootCategories;
@@ -33,7 +31,7 @@ function categoriseProducts(products: IProductFood[]): Record<string, ICategory>
     });
   }
 
-  return rootCategories;
+  return { ...rootCategories };
 }
 
 export default categoriseProducts;

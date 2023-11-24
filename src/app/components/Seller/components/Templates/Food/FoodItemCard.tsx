@@ -46,11 +46,15 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
     mode === EItemCardFood.Preview ? undefined : handleItemPreview;
   const detailsGap = isRow ? "0.5rem" : "0.5rem";
   const isVeg = item.veg || item.veg !== false;
-  const imgWidth = mode === EItemCardFood.Preview ? "100%" : "10rem";
+  const imgWidth = mode === EItemCardFood.Preview ? "100%" : "64%";
   const imgHeight = mode === EItemCardFood.Preview ? "100%" : "100%";
   const detailsPadding =
-    mode === EItemCardFood.Preview ? "1rem 0.5rem" : "0.5rem 0 0 ";
-  const imageRadius = mode === EItemCardFood.Preview ? "8px 8px 0 0 " : "12px";
+    mode === EItemCardFood.Preview
+      ? "1rem 0.5rem"
+      : item.image
+      ? "0.5rem 0 0 "
+      : "0";
+  const imageRadius = mode === EItemCardFood.Preview ? "8px 8px 0 0 " : "14px";
 
   const defaultVariant = item.variants
     ? item.variants.find((variant) => variant.default) || item.variants[0]
@@ -83,7 +87,7 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
         ) : null}
         <Col p={detailsPadding} j="center" style={{ gap: detailsGap }}>
           <Col onClick={previewHandler} style={{ gap: detailsGap }}>
-            <Row a="center" style={{ gap: "0.5rem" }}>
+            <Row a="center" style={{ gap: "0.75rem" }}>
               <Row
                 w="initial"
                 p="2px"
@@ -131,10 +135,10 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
                 c={theme.neutralColor.textTertiary}
               >{`In ${categoryFormat}`}</Text>
             ) : null}
-            <Text tt="cap" w={6} s="16" style={{ cursor: "pointer" }}>
+            <Text tt="cap" w={5} s="16" style={{ cursor: "pointer" }}>
               {item.name}
             </Text>
-            <Text w={4} s="16" c="#fd8a94">
+            <Text w={5} s="14">
               &#x20B9; {selectedVariant ? selectedVariant.price : item.price}
             </Text>
           </Col>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Box, Col, Row, Text } from "ui/basic";
+import { Box, Col, Row } from "ui/basic";
 import { useTheme } from "styled-components";
 import ProfileCard from "../../ProfileCard/ProfileCard";
 import SplashScreen from "../../SplashScreen/SplashScreen";
@@ -14,6 +14,8 @@ import { getSellerLogoByID } from "app/services/Seller/Profile";
 import { Drawer } from "ui/Drawer";
 import { SearchCard } from "ui/Search";
 import ItemFoodCard from "./FoodItemCard";
+import categoriseProducts from "./utils/categoriseProducts";
+
 interface IShopTemplateFood {
   profile: ISellerProfile;
 }
@@ -25,6 +27,7 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
   const [products, setProducts] = useState<IProductFood[]>([]);
   const [containerHeight, setContainerHeight] = useState("100vh");
   const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState<number>(0);
   const [isSearch, setIsSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -94,14 +97,19 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
           ? scrollContainer.screenTop
           : scrollContainer.scrollY;
       let newActiveCategory = "";
+      let newActiveIndex = -1;
       for (const [category, position] of Object.entries(
         categoryPositionsRef.current
       )) {
         if (scrollPosition >= position - MENU_HEADER_HEIGHT) {
           newActiveCategory = category;
+          newActiveIndex = Object.keys(categoryPositionsRef.current).indexOf(
+            category
+          );
         }
       }
-      setActiveCategory(newActiveCategory);
+      setActiveCategory(newActiveCategory.toLowerCase());
+      setActiveCategoryIndex(newActiveIndex);
     };
     if (scrollContainer) {
       scrollContainer.addEventListener("scroll", handleScroll);
@@ -140,6 +148,10 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
       }
     }
   });
+  const topLevelCategories = Object.keys(categoriseProducts(products)).map(
+    (cat) => cat.toLowerCase()
+  );
+  console.log(categoriseProducts(products));
   const handleShowSearch = () => {
     setIsSearch(true);
   };
@@ -163,22 +175,19 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
           height: containerHeight,
         }}
       >
-        <Col style={{ background: "#fff2f3" }}>
+        <Col style={{ background: "white" }}>
           <MenuHeader
-            name={activeCategory}
+            name={shopName}
+            categories={topLevelCategories}
+            activeCategoryIndex={activeCategoryIndex}
             onSearch={handleShowSearch}
             stickyPointHeader={stickyPointHeader}
           />
-          <Box ref={profileCardRef} p={"1rem"}>
+          <Box ref={profileCardRef} p={"1.5rem 1rem"}>
             <Col
               a="center"
-              p={"2rem"}
-              br="16px"
               style={{
-                gap: "0.5rem",
-                background: theme.neutralColor.bgContainer,
-                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
-                position: "relative",
+                gap: "1rem",
               }}
             >
               <ProfileCard
@@ -189,11 +198,13 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
             </Col>
           </Box>
 
-          <FoodMenu
-            onCategoryPositionsUpdate={handleCategoryPosition}
-            products={products}
-            onSearch={handleShowSearch}
-          />
+          <Row style={{ borderTop: `1px solid #F7F7F7` }}>
+            <FoodMenu
+              onCategoryPositionsUpdate={handleCategoryPosition}
+              products={products}
+              onSearch={handleShowSearch}
+            />
+          </Row>
           <MenuButton
             activeCategory={activeCategory}
             onCategoryClick={handleCategoryClick}

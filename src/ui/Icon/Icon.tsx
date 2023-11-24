@@ -25,8 +25,8 @@ import {
   faTimes,
   faSearch,
   faSortDown,
-  faLocation,
   faDownload,
+  faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -79,7 +79,7 @@ export const icons: Icons = {
   notification: faBell,
   leaf: faLeaf,
   leftArrow: faArrowLeft,
-  location: faLocation,
+  location: faLocationDot,
   rightArrow: faArrowRight,
   bars: faBars,
   ellipsis: faEllipsisVertical,

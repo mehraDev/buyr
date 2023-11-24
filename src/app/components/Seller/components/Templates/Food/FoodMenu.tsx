@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import { IProductFood } from "app/interfaces";
 import React from "react";
 import Icon, { IconName } from "ui/Icon";
+import Button from "ui/Button";
 
 interface IFoodMenu {
   products: IProductFood[];
@@ -45,42 +46,37 @@ const FoodMenu: React.FC<IFoodMenu> = ({
   });
 
   return (
-    <Col p={"1rem"}>
-      <Col
-        p={"0rem 0rem 5rem"}
-        style={{
-          boxShadow: "rgba(0, 0, 0, 0.069) 0px 1px 4px",
-          gap: "1px",
-        }}
+    <Col p={"0rem 0rem 5rem"}>
+      <Row
+        p="1rem"
+        a="center"
+        j="between"
+        style={{ borderBottom: `1px solid #F7F7F7` }}
       >
-        <Row
-          p="1rem"
-          a="center"
-          style={{
-            borderRadius: "8px 8px 0 0",
-            background: theme.neutralColor.bgContainer,
-            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
-          }}
-          j="between"
-        >
-          <Text s="16" w={6} c={theme.neutralColor.text}>
-            Menu
-          </Text>
-          <Row w="initial">
+        <Text s="18" w={6} c={theme.neutralColor.text}>
+          Menu
+        </Text>
+        <Row w="initial">
+          <Button
+            variant="secondary"
+            border="1px solid #d9d9e3"
+            padding="0.25rem 0.5rem"
+            br="0.35rem"
+          >
             <Icon
               name={IconName.Search}
               onClick={() => onSearch()}
               borderRadius={0}
-              color="#ffb7bd"
+              color={theme.neutralColor.textSecondary}
             />
-          </Row>
+          </Button>
         </Row>
-        <CategoryViewer
-          scrollContainer={scrollContainer}
-          products={filterProducts}
-          onCategoryPositionsUpdate={onCategoryPositionsUpdate}
-        />
-      </Col>
+      </Row>
+      <CategoryViewer
+        scrollContainer={scrollContainer}
+        products={filterProducts}
+        onCategoryPositionsUpdate={onCategoryPositionsUpdate}
+      />
     </Col>
   );
 };

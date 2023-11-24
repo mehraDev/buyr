@@ -1,20 +1,27 @@
+import React from "react";
 import { useTheme } from "styled-components";
-import Icon, { IconName } from "ui/Icon";
-// import Icon, { IconName } from "ui/Icon";
+import Button from "ui/Button";
+import { IButton } from "ui/Button/Button";
+import { InputSearch } from "ui/Form";
+import HorizontalSlider from "ui/Scroller/HorizontalSlider/HorizontalSlider";
 import { Sticky } from "ui/Sticky";
-import { Row, Text } from "ui/basic";
+import { Col, Row, Text } from "ui/basic";
 
 interface IMenuHeader {
   name?: string;
   onSearch?: () => void;
   containerRef?: React.RefObject<HTMLDivElement>;
   stickyPointHeader: number;
+  categories: string[];
+  activeCategoryIndex: number;
 }
 export const MENU_HEADER_HEIGHT = 50;
 const MenuHeader: React.FC<IMenuHeader> = ({
   name,
   onSearch,
   containerRef,
+  categories,
+  activeCategoryIndex,
   stickyPointHeader,
 }) => {
   const theme = useTheme();
@@ -35,7 +42,6 @@ const MenuHeader: React.FC<IMenuHeader> = ({
       containerRef={containerRef}
     >
       <Row
-        p={"0.5rem 1rem"}
         style={{
           zIndex: 1,
           background: theme.neutralColor.bgContainer,
@@ -49,38 +55,58 @@ const MenuHeader: React.FC<IMenuHeader> = ({
             opacity: 1,
             alignItems: "center",
             justifyContent: "center",
-            width: "initial",
           }}
           style={{ opacity: 0, display: "none" }}
           containerRef={containerRef}
         >
-          <Row
-            style={{ position: "relative", background: "#f65d6b" }}
-            a="center"
-            w="initial"
-            p={"0.5rem"}
-            br="6px"
+          <Col
+            style={{ position: "relative", gap: "0.5rem" }}
+            p={"0.5rem 1rem"}
           >
-            <Text tt="cap" type="heading" s="14" w={5} c={"#fff"}>
-              {name}
-            </Text>
-          </Row>
+            <Row onClick={onSearch}>
+              <InputSearch
+                value={""}
+                placeholder={`Search in ${name}`}
+                onChange={function (value: string): void {}}
+                onClear={function (): void {}}
+              />
+            </Row>
+
+            <HorizontalSlider activeChildIndex={activeCategoryIndex}>
+              {/* <Row style={{ gap: "0.5rem" }}> */}
+              {categories.map((category, index) =>
+                index === activeCategoryIndex ? (
+                  <ButtonSlider>
+                    <Text tt="cap">{category}</Text>
+                  </ButtonSlider>
+                ) : (
+                  <ButtonSlider
+                    color={theme.neutralColor.textSecondary}
+                    border="1px solid #d9d9e3"
+                    variant="secondary"
+                  >
+                    <Text tt="cap">{category}</Text>
+                  </ButtonSlider>
+                )
+              )}
+              {/* </Row> */}
+            </HorizontalSlider>
+          </Col>
         </Sticky>
-        <Row w="initial">
-          <Icon
-            width={1.1}
-            height={1.1}
-            color={"#f65d6b"}
-            name={IconName.Search}
-            onClick={onSearch}
-            style={{}}
-            padding="0px"
-            borderRadius={0}
-          />
-        </Row>
       </Row>
     </Sticky>
   );
 };
+interface IButtonSlider extends IButton {}
+
+// const ButtonSlider: React.FC<IButtonSlider> = (props) => {
+//   return <Button {...props} padding="0.25rem 0.5rem" />;
+// };
+
+const ButtonSlider = React.forwardRef<HTMLButtonElement, IButtonSlider>(
+  (props, ref) => {
+    return <Button ref={ref} {...props} padding="0.25rem 0.5rem" />;
+  }
+);
 
 export default MenuHeader;

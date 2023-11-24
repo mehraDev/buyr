@@ -22,7 +22,7 @@ const getProductsFoodByID = async (id: string): Promise<IProductFood[]> => {
       relativeImageProducts,
       EShop.Food
     );
-    return absoluteImageProducst;
+    return absoluteImageProducst as IProductFood[];
   } catch (error) {
     throw error;
   }
