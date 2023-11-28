@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, forwardRef } from "react";
 import styled from "styled-components";
 import theme from "ui/Utils/Media/Theme/theme";
 
@@ -16,32 +16,38 @@ export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
 }
 
-const Button: React.FC<IButton> = ({
-  children,
-  variant = "primary",
-  size,
-  color,
-  bg,
-  border,
-  br,
-  disabled = false,
-  ...rest
-}) => {
-  return (
-    <ButtonWrapper
-      variant={variant}
-      size={size}
-      {...rest}
-      color={color}
-      bg={bg}
-      border={border}
-      br={br}
-      disabled={disabled}
-    >
-      {children}
-    </ButtonWrapper>
-  );
-};
+const Button = forwardRef<HTMLButtonElement, IButton>(
+  (
+    {
+      children,
+      variant = "primary",
+      size,
+      color,
+      bg,
+      border,
+      br,
+      disabled = false,
+      ...rest
+    },
+    ref
+  ) => {
+    return (
+      <ButtonWrapper
+        ref={ref}
+        variant={variant}
+        size={size}
+        {...rest}
+        color={color}
+        bg={bg}
+        border={border}
+        br={br}
+        disabled={disabled}
+      >
+        {children}
+      </ButtonWrapper>
+    );
+  }
+);
 const ButtonWrapper = styled.button<IButton>`
   background-color: ${({ bg, variant, disabled }) =>
     disabled
@@ -67,7 +73,7 @@ const ButtonWrapper = styled.button<IButton>`
     if (border) {
       return border;
     } else if (variant === "primary") {
-      return "#ffffff";
+      return `1px solid ${theme.brandColor.primary}`;
     } else if (variant === "secondary") {
       if (disabled) {
         return `1px solid ${theme.neutralColor.textTertiary}`;

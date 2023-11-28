@@ -57,7 +57,13 @@ const Category: React.FC<ICategoryList> = ({
       }
     };
     calculatePosition();
-  }, [categoryName, onCategoryPosition, expandedCategories, scrollContainer]);
+  }, [
+    categoryName,
+    category,
+    onCategoryPosition,
+    expandedCategories,
+    scrollContainer,
+  ]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -112,16 +118,10 @@ const Category: React.FC<ICategoryList> = ({
         j="between"
         onClick={() => categoryToggleHandler()}
         style={{
-          background: theme.neutralColor.bgContainer,
-          boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
           cursor: "pointer",
         }}
       >
-        <Text
-          tt="cap"
-          c={isTopLevel ? "#ffb7bd" : "#ffb7bd"}
-          w={isTopLevel ? 6 : 5}
-        >
+        <Text tt="cap" s="16" w={6}>
           {categoryNameFormatted}
         </Text>
         <Icon
@@ -141,16 +141,12 @@ const Category: React.FC<ICategoryList> = ({
       </Row>
       {isExpanded && (
         <>
-          <Col p="1rem 0" style={{ gap: "1rem" }}>
+          <Col p="1rem">
             {categoryProducts.map((product, index) => (
               <Row
                 key={index}
-                p={"1rem "}
-                br="0.5rem"
-                style={{
-                  background: theme.neutralColor.bgContainer,
-                  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1)",
-                }}
+                p={"1rem 0.5rem"}
+                style={{ borderBottom: `1px dotted rgb(225, 225, 229)` }}
               >
                 <ItemFoodCard item={{ ...product }} key={product.id} />
               </Row>

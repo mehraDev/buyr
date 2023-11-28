@@ -4,10 +4,11 @@ import Icon, { IconName } from "ui/Icon";
 import placeholderProfileImage from "../../../../../assets/shop/profile-placeholder.png";
 
 import { ISellerProfile } from "app/interfaces"; // Import ISellerProfile interface
-import React from "react";
+import React, { useState } from "react";
 import { ImageWithFallback } from "ui/ImageWithFallback";
 import ContactBar from "./ContactBar/ContactBar";
 import { ISellerContacts } from "app/interfaces/Shop/Contacts";
+import { useAuth } from "app/hooks/useAuth";
 
 interface IProfileCard {
   profile: ISellerProfile;
@@ -18,55 +19,72 @@ interface IProfileCard {
 const ProfileCard: React.FC<IProfileCard> = ({ contacts, logo, profile }) => {
   const theme = useTheme();
   const { name, about, address }: ISellerProfile = profile;
-
+  const [like, setLike] = useState(false);
+  const { requireAuth } = useAuth();
+  const toggleLike = () => {
+    requireAuth(() => {
+      setLike(true);
+    });
+  };
   const profileBasic = (
     <>
-      <ImageWithFallback
-        src={logo}
-        fallbackImage={placeholderProfileImage}
-        alt="Logo"
-      />
-      <Text tt="cap" s="18" w={7} type="heading" c={theme.neutralColor.text}>
-        {name}
-      </Text>
-      <About tags={about} />
-      {address && (
-        <Row
-          a="center"
-          w="initial"
-          p="6px"
-          style={{
-            border: " 1px solid #ca1a193d",
-            borderLeft: "0px",
-            borderRight: "0px",
-          }}
-        >
-          <Icon
-            name={IconName.Location}
-            width={1}
-            padding="0"
-            color={"#CA1919"}
-            borderRadius={0.35}
-            height={1}
-          />
-          <Text
-            tt="cap"
-            ml="8px"
-            c={theme.neutralColor.textSecondary}
-            s="12"
-            w={5}
-          >
-            {address}
-          </Text>
-        </Row>
-      )}
+      <Row>
+        <Icon
+          color={like ? "red" : "blue"}
+          name={IconName.Diamond}
+          onClick={toggleLike}
+        />
+      </Row>
+      <Row w="initial">
+        <ImageWithFallback
+          src={logo}
+          h="8rem"
+          w="8rem"
+          fallbackImage={placeholderProfileImage}
+          alt="Logo"
+        />
+      </Row>
       <Col
-        w="initial"
+        a="center"
         style={{
-          gap: "12px",
+          gap: "1rem",
         }}
       >
-        <ContactBar contacts={contacts} />
+        <Text tt="cap" s="20" w={7} c={theme.neutralColor.text}>
+          {name}
+        </Text>
+        <About tags={about} />
+        {address && (
+          <Row
+            a="center"
+            w="initial"
+            p="0.5rem 1rem"
+            style={{
+              gap: "0.5rem",
+              border: "1px solid #d9d9e3",
+            }}
+            br="0.75rem"
+          >
+            <Icon
+              name={IconName.Location}
+              width={1}
+              height={1}
+              padding="0"
+              color={"#e91e63"}
+            />
+            <Text tt="cap" c={theme.neutralColor.textSecondary} s="12" w={5}>
+              {address}
+            </Text>
+          </Row>
+        )}
+        <Col
+          w="initial"
+          style={{
+            gap: "12px",
+          }}
+        >
+          <ContactBar contacts={contacts} />
+        </Col>
       </Col>
     </>
   );
@@ -97,15 +115,15 @@ const About: React.FC<{ tags: string[] }> = ({ tags }) => {
           )}
           {tags.map((item, index) => (
             <React.Fragment key={index}>
-              <Text tt="cap" c={theme.neutralColor.textTertiary} s="14" w={6}>
+              <Text tt="cap" c={theme.neutralColor.textSecondary} s="14" w={6}>
                 {item}
               </Text>
               {index < tags.length - 1 && (
                 <Icon
                   name={IconName.Diamond}
-                  width={0.3}
-                  height={0.3}
-                  color={"#FFA000"}
+                  width={0.2}
+                  height={0.2}
+                  color={theme.neutralColor.textTertiary}
                 />
               )}
             </React.Fragment>

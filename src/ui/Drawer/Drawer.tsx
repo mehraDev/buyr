@@ -13,19 +13,24 @@ interface IDrawer {
 
 const slideUp = keyframes`
   0% {
-    transform: translateY(100%);
+    /* transform: translateY(100%); */
+    opacity: 0;
   }
   100% {
-    transform: translateY(0);
+    /* transform: translateY(0); */
+    opacity: 1;
+
   }
 `;
 
 const slideDown = keyframes`
   0% {
-    transform: translateY(0);
+    /* transform: translateY(0); */
+    opacity: 1;
   }
   100% {
-    transform: translateY(100%);
+    /* transform: translateY(100%); */
+    opacity: 0;
   }
 `;
 
@@ -38,7 +43,7 @@ const DrawerContainer = styled(Box)<{ bg: string }>`
 `;
 
 const AnimatedCol = styled(Col)<{ open: boolean }>`
-  animation: ${(props) => (props.open ? slideUp : slideDown)} 0.3s forwards;
+  animation: ${(props) => (props.open ? slideUp : slideDown)} 0.05s forwards;
 `;
 
 const Drawer: React.FC<IDrawer> = ({
@@ -64,7 +69,6 @@ const Drawer: React.FC<IDrawer> = ({
   }, [isOpen]);
 
   const handleAnimationEnd = () => {
-    console.log("Animation ended");
     if (isOpen) {
       setOpened(true);
     } else {
@@ -73,8 +77,9 @@ const Drawer: React.FC<IDrawer> = ({
     }
   };
 
-  const backgroundColor =
-    opened && isOpen ? bg || theme.neutralColor.bgMask : "transparent";
+  const backgroundColor = isOpen
+    ? bg || theme.neutralColor.bgMask
+    : "transparent";
 
   return (
     <>

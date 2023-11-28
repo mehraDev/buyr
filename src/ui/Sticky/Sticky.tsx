@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box } from "ui/basic";
+import { Box, IBox } from "ui/basic";
 
-interface ISticky {
+interface ISticky extends IBox {
   children: React.ReactNode;
   at: number;
   stickyStyle?: React.CSSProperties;
@@ -20,6 +20,7 @@ const Sticky: React.FC<ISticky> = ({
   parentRef,
   containerRef,
   height,
+  fd,
   onStickyChange,
 }) => {
   const [isSticky, setIsSticky] = useState(false);
@@ -27,6 +28,10 @@ const Sticky: React.FC<ISticky> = ({
   const internalRef = useRef<HTMLDivElement>(null);
   const ref = parentRef || internalRef;
   const prevScrollY = useRef(0);
+  const [childrenHeight, setChildrenHeight] = useState<number>(0);
+  const childrenRef = useRef<HTMLDivElement>(null);
+
+  const stickyOffsetPoint = at;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,8 +42,10 @@ const Sticky: React.FC<ISticky> = ({
           : container.scrollTop || 0;
       setScrollDirection(prevScrollY.current < currentScrollY ? "down" : "up");
       prevScrollY.current = currentScrollY;
-      const newIsSticky = currentScrollY >= at;
-      setIsSticky(newIsSticky);
+      const newIsSticky = currentScrollY >= stickyOffsetPoint;
+      if (newIsSticky !== isSticky) {
+        setIsSticky(newIsSticky);
+      }
       if (newIsSticky !== isSticky && onStickyChange) {
         onStickyChange();
       }
@@ -59,40 +66,49 @@ const Sticky: React.FC<ISticky> = ({
     }
 
     return cleanup;
-  }, [at, containerRef, isSticky, onStickyChange]);
+  }, [at, containerRef, isSticky, onStickyChange, stickyOffsetPoint]);
 
-  if (height) {
-    return (
-      <Box style={{ minHeight: `${height}px` }} ref={ref}>
-        <Box
-          h={`${height}px`}
-          style={
-            isSticky
-              ? {
-                  ...stickyStyle,
-                }
-              : { ...style }
-          }
-        >
-          {children}
-        </Box>
-      </Box>
-    );
-  }
+  useEffect(() => {
+    if (childrenRef.current) {
+      const rect = childrenRef.current.getBoundingClientRect();
+      setChildrenHeight(rect.height);
+    }
+  }, [children]);
+
+  // if (childrenHeight) {
   return (
-    <Box
-      ref={ref}
-      style={
-        isSticky
-          ? {
-              ...stickyStyle,
-            }
-          : { ...style }
-      }
-    >
-      {children}
+    <Box style={{ minHeight: `${childrenHeight}px` }} ref={ref}>
+      <Box
+        fd={fd}
+        ref={childrenRef}
+        // h={`${height}px`}
+        style={
+          isSticky
+            ? {
+                ...stickyStyle,
+              }
+            : { ...style }
+        }
+      >
+        {children}
+      </Box>
     </Box>
   );
+  // }
+  // return (
+  //   <Box
+  //     ref={ref}
+  //     style={
+  //       isSticky
+  //         ? {
+  //             ...stickyStyle,
+  //           }
+  //         : { ...style }
+  //     }
+  //   >
+  //     {children}
+  //   </Box>
+  // );
 };
 
 export default Sticky;

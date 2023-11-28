@@ -30,7 +30,6 @@ const SearchCard: React.FC<ISearchCard<any>> = ({
       h="100%"
       style={{
         background: theme.neutralColor.bgContainer,
-        borderRadius: "8px 8px 0 0",
       }}
     >
       <Row

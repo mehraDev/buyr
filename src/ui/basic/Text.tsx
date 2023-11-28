@@ -54,12 +54,12 @@ const Text = styled.div<IText>`
   ${(props) =>
     props.type === "heading" &&
     css`
-      font-family: "Roboto", sans-serif;
+      font-family: "Manrope", sans-serif;
     `}
   ${(props) =>
     props.type === "subheading" &&
     css`
-      font-family: "Roboto", sans-serif;
+      font-family: "Manrope", sans-serif;
     `}
 `;
 
