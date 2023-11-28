@@ -57,7 +57,13 @@ const Category: React.FC<ICategoryList> = ({
       }
     };
     calculatePosition();
-  }, [categoryName, onCategoryPosition, expandedCategories, scrollContainer]);
+  }, [
+    categoryName,
+    category,
+    onCategoryPosition,
+    expandedCategories,
+    scrollContainer,
+  ]);
 
   useEffect(() => {
     const handleResize = () => {

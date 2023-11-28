@@ -8,6 +8,7 @@ interface IImageWithFallback {
   w?: string;
   h?: string;
   br?: string;
+  shadow?: string;
 }
 const ImageWithFallback: React.FC<IImageWithFallback> = ({
   src,
@@ -16,6 +17,7 @@ const ImageWithFallback: React.FC<IImageWithFallback> = ({
   w = "9rem",
   h = "9rem",
   br = "10px",
+  shadow = true,
 }) => {
   const [isProfileImgError, setIsProfileImgError] = useState(false);
   const imageUrl = isProfileImgError ? fallbackImage : src;
@@ -25,6 +27,7 @@ const ImageWithFallback: React.FC<IImageWithFallback> = ({
 
   return (
     <Img
+      style={{ boxShadow: shadow ? "0 1px 6px 0 #a5929747" : "" }}
       src={imageUrl}
       alt={alt}
       w={w}

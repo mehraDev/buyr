@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface LocationState {
   latitude: number | null;
@@ -11,7 +11,7 @@ const initialState: LocationState = {
 };
 
 const locationSlice = createSlice({
-  name: 'location',
+  name: "location",
   initialState,
   reducers: {
     setLocation: (state, action: PayloadAction<{ latitude: number; longitude: number }>) => {
@@ -22,4 +22,4 @@ const locationSlice = createSlice({
 });
 
 export const { setLocation } = locationSlice.actions;
-export default locationSlice.reducer;
+export const locationReducer = locationSlice.reducer;

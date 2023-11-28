@@ -27,6 +27,7 @@ import {
   faSortDown,
   faDownload,
   faLocationDot,
+  faArrowDownShortWide,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -40,7 +41,7 @@ export enum IconName {
   Check = "check",
   Clear = "clear",
   Notification = "notification",
-
+  FilterArrow = "filterArrow",
   LeftArrow = "leftArrow",
 
   RightArrow = "rightArrow",
@@ -105,6 +106,7 @@ export const icons: Icons = {
   search: faSearch,
   upArrow: faSortUp,
   share: faArrowUpFromBracket,
+  filterArrow: faArrowDownShortWide,
 };
 
 interface IconProps {

@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Category from "./Category";
 import React from "react";
 import categoriseProducts from "./utils/categoriseProducts";
+import { ESortType } from "./FoodMenu";
 
 interface ICategoryviewer {
   products: IProductFood[];
   scrollContainer?: React.RefObject<HTMLDivElement>;
+  sort: ESortType | null;
   onActive?: (value: string) => void;
   onCategoryPositionsUpdate: (category: string, postion: number) => void;
 }
@@ -16,11 +18,13 @@ const CategoryViewer: React.FC<ICategoryviewer> = ({
   scrollContainer,
   products,
   onCategoryPositionsUpdate,
+  sort,
 }) => {
   const categorisedProducts = categoriseProducts(products);
   const [expandedCategories, setExpandedCategories] = useState<{
     [category: string]: boolean;
   }>({});
+
   useEffect(() => {
     const initialExpandedCategories: { [category: string]: boolean } = {};
     const categorisedProducts = categoriseProducts(products);
@@ -50,4 +54,4 @@ const CategoryViewer: React.FC<ICategoryviewer> = ({
     </>
   );
 };
-export default React.memo(CategoryViewer);
+export default CategoryViewer;

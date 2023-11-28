@@ -4,10 +4,11 @@ import Icon, { IconName } from "ui/Icon";
 import placeholderProfileImage from "../../../../../assets/shop/profile-placeholder.png";
 
 import { ISellerProfile } from "app/interfaces"; // Import ISellerProfile interface
-import React from "react";
+import React, { useState } from "react";
 import { ImageWithFallback } from "ui/ImageWithFallback";
 import ContactBar from "./ContactBar/ContactBar";
 import { ISellerContacts } from "app/interfaces/Shop/Contacts";
+import { useAuth } from "app/hooks/useAuth";
 
 interface IProfileCard {
   profile: ISellerProfile;
@@ -18,12 +19,27 @@ interface IProfileCard {
 const ProfileCard: React.FC<IProfileCard> = ({ contacts, logo, profile }) => {
   const theme = useTheme();
   const { name, about, address }: ISellerProfile = profile;
-
+  const [like, setLike] = useState(false);
+  const { requireAuth } = useAuth();
+  const toggleLike = () => {
+    requireAuth(() => {
+      setLike(true);
+    });
+  };
   const profileBasic = (
     <>
+      <Row>
+        <Icon
+          color={like ? "red" : "blue"}
+          name={IconName.Diamond}
+          onClick={toggleLike}
+        />
+      </Row>
       <Row w="initial">
         <ImageWithFallback
           src={logo}
+          h="8rem"
+          w="8rem"
           fallbackImage={placeholderProfileImage}
           alt="Logo"
         />

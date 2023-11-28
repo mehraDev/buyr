@@ -11,6 +11,10 @@ import getSellerComponent from "app/components/Seller";
 import theme from "ui/Utils/Media/Theme/theme";
 import { ThemeProvider } from "styled-components";
 import SEOHead from "app/components/Seller/components/SEOHead/SEOHead";
+import { useAuth } from "app/hooks/useAuth";
+import { AuthModalProvider, useAuthModal } from "app/contexts/useAuthModal";
+import { Drawer } from "ui/Drawer";
+import { Col, Row } from "ui/basic";
 
 const shopTheme = {
   ...theme,
@@ -28,7 +32,6 @@ const Seller: React.FC = () => {
       if (sellerUserId) {
         try {
           const sellerProfile = await getSellerProfileByUser(sellerUserId);
-
           setProfile(sellerProfile);
         } catch (err) {
           setError("Failed to fetch seller profile. Please try again later.");
@@ -57,7 +60,6 @@ const Seller: React.FC = () => {
       />
     );
   }
-
   if (!profile) {
     return <SellerNotFoundPage onHomeClick={handleHomeClick} />;
   }
@@ -67,12 +69,13 @@ const Seller: React.FC = () => {
   if (!StaticShop) {
     return <div>Invalid Shop Type</div>;
   }
-
   return (
-    <ThemeProvider theme={shopTheme}>
-      <SEOHead profile={profile} />
-      <StaticShop profile={profile} />
-    </ThemeProvider>
+    <AuthModalProvider>
+      <ThemeProvider theme={shopTheme}>
+        <SEOHead profile={profile} />
+        <StaticShop profile={profile} />
+      </ThemeProvider>
+    </AuthModalProvider>
   );
 };
 

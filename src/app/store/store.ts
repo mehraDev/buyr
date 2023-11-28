@@ -1,11 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit';
-import locationReducer from './locationSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import { userReducer } from "./userSlice/userSlice";
+import { locationReducer } from "./locationSlice";
 
 const store = configureStore({
   reducer: {
+    user: userReducer,
     location: locationReducer,
-    // Add other reducers here if needed
   },
 });
-
+export type RootState = ReturnType<typeof store.getState>;
 export default store;
