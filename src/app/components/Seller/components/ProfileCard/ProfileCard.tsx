@@ -19,22 +19,22 @@ interface IProfileCard {
 const ProfileCard: React.FC<IProfileCard> = ({ contacts, logo, profile }) => {
   const theme = useTheme();
   const { name, about, address }: ISellerProfile = profile;
-  const [like, setLike] = useState(false);
-  const { requireAuth } = useAuth();
-  const toggleLike = () => {
-    requireAuth(() => {
-      setLike(true);
-    });
-  };
+  // const [like, setLike] = useState(false);
+  // const { requireAuth } = useAuth();
+  // const toggleLike = () => {
+  //   requireAuth(() => {
+  //     setLike(true);
+  //   });
+  // };
   const profileBasic = (
     <>
-      <Row>
+      {/* <Row>
         <Icon
           color={like ? "red" : "blue"}
           name={IconName.Diamond}
           onClick={toggleLike}
         />
-      </Row>
+      </Row> */}
       <Row w="initial">
         <ImageWithFallback
           src={logo}
