@@ -40,8 +40,6 @@ function categoriseProducts(products: IProductFood[]): Record<string, ICategory>
   }
 
   return sortedRootCategories;
-
-  // return { ...rootCategories };
 }
 
 export default categoriseProducts;

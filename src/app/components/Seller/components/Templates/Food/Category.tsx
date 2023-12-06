@@ -6,6 +6,8 @@ import { Col, Row, Text } from "ui/basic";
 
 import React from "react";
 import ItemFoodCard from "./FoodItemCard";
+import { ESortType } from "./FoodMenu";
+import sortProductsFood from "app/services/Seller/Products/sortProducts";
 
 interface ICategory {
   products: IProductFood[];
@@ -13,6 +15,7 @@ interface ICategory {
 }
 
 interface ICategoryList {
+  activeSort: ESortType;
   isTopLevel?: boolean;
   onCategoryPosition?: (category: string, position: number) => void;
   categoryName: string;
@@ -23,6 +26,7 @@ interface ICategoryList {
 }
 const Category: React.FC<ICategoryList> = ({
   category,
+  activeSort,
   onCategoryPosition,
   categoryName,
   scrollContainer,
@@ -100,10 +104,11 @@ const Category: React.FC<ICategoryList> = ({
     };
   }, [categoryName, onCategoryPosition, scrollContainer]);
 
-  const categoryProducts = category.products;
-  if (!categoryProducts || categoryProducts.length === 0) {
+  if (!category.products || category.products.length === 0) {
     return null;
   }
+
+  const sortedProducts = sortProductsFood(category.products, activeSort);
 
   const categoryToggleHandler = () => {
     onCategoryToggle(categoryName);
@@ -142,7 +147,7 @@ const Category: React.FC<ICategoryList> = ({
       {isExpanded && (
         <>
           <Col p="1rem">
-            {categoryProducts.map((product, index) => (
+            {sortedProducts.map((product, index) => (
               <Row
                 key={index}
                 p={"1rem 0.5rem"}
@@ -155,6 +160,7 @@ const Category: React.FC<ICategoryList> = ({
           {Object.entries(category.subCategories).map(
             ([subCatName, subCategory], index) => (
               <Category
+                activeSort={activeSort}
                 key={index}
                 categoryName={subCatName}
                 category={subCategory}

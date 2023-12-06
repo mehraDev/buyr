@@ -22,6 +22,8 @@ interface IFoodMenu {
 export enum ESortType {
   PriceLowToHigh = "Price: Low to High",
   PriceHighToLow = "Price: High to Low",
+  AlphabeticalAsc = "Alphabetical: A to Z",
+  AlphabeticalDesc = "Alphabetical: Z to A",
 }
 
 const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
@@ -89,12 +91,14 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
     }
   });
 
-  const [activeSort, setActiveSort] = useState<ESortType | null>(null);
+  const [activeSort, setActiveSort] = useState<ESortType>(
+    ESortType.AlphabeticalAsc
+  );
   const sortingOptions = Object.values(ESortType);
 
   const handleSortChange = (sort: ESortType) => {
     if (activeSort === sort) {
-      setActiveSort(null);
+      setActiveSort(ESortType.AlphabeticalAsc);
     } else {
       setActiveSort(sort);
     }
@@ -226,7 +230,7 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
       <CategoryViewer
         scrollContainer={scrollContainer}
         products={filterProducts}
-        sort={activeSort}
+        activeSort={activeSort}
         onCategoryPositionsUpdate={handleCategoryPosition}
       />
       <MenuButton

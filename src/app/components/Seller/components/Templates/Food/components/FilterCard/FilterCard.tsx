@@ -34,7 +34,7 @@ const FilterCard: React.FC<FilterCardProps> = ({
           </Text>
           <Icon name={IconName.Close} color="red" onClick={onClose} />
         </Row>
-        <Row style={{ gap: "0.5rem" }} br="0.35">
+        <Row style={{ gap: "0.5rem", flexWrap: "wrap" }} br="0.35">
           {sortingOptions ? (
             sortingOptions.map((sortOption) => (
               <Button
