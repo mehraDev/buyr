@@ -139,6 +139,7 @@ const ButtonWrapper = styled.button<IButton>`
   align-items: center;
   gap: 0.5rem;
   justify-content: center;
+  box-shadow: "0 0 2px #000000e";
 `;
 
 const ButtonUnderlined = styled(Button)`

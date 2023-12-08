@@ -4,69 +4,49 @@ import Button from "ui/Button";
 import { IButton } from "ui/Button/Button";
 import Icon, { IconName } from "ui/Icon";
 import HorizontalSlider from "ui/Scroller/HorizontalSlider/HorizontalSlider";
-import theme from "ui/Utils/Media/Theme/theme";
 import { Row, Text } from "ui/basic";
 
-export interface FilterSortSearchProps extends TagsListProps {
+export interface FilterSortProps extends TagsListProps {
   toggleDrawer: () => void;
-  onSearch: () => void;
 }
 
-const FilterSortSearch: React.FC<FilterSortSearchProps> = ({
+const FilterSort: React.FC<FilterSortProps> = ({
   toggleDrawer,
-  onSearch,
   tagList,
   activeTagsList,
   handleTagClick,
 }) => {
   return (
-    <Row p="0.5rem 1rem" a="center" j="between" style={{ gap: "1rem" }}>
-      <Row style={{ overflowX: "auto" }}>
-        <HorizontalSlider activeChildIndex={0}>
-          <UtilityButton
-            label={"Filters"}
-            icon={IconName.FilterArrow}
-            onClick={toggleDrawer}
-          />
-          <TagsList
-            tagList={tagList}
-            activeTagsList={activeTagsList}
-            handleTagClick={handleTagClick}
-          />
-        </HorizontalSlider>
-      </Row>
-      <Row w="initial" a="center">
-        <Button
-          variant="secondary"
-          border="1px solid #d9d9e3"
-          padding="0.25rem 0.5rem"
-          br="0.35rem"
-          onClick={() => onSearch()}
-        >
-          <Icon
-            name={IconName.Search}
-            borderRadius={0}
-            color={theme.neutralColor.textSecondary}
-          />
-        </Button>
-      </Row>
+    <Row style={{ overflowX: "auto", gap: "1rem" }}>
+      <UtilityButton
+        label={"Sort"}
+        icon={IconName.FilterArrow}
+        onClick={toggleDrawer}
+      />
+      <HorizontalSlider activeChildIndex={0}>
+        <TagsList
+          tagList={tagList}
+          activeTagsList={activeTagsList}
+          handleTagClick={handleTagClick}
+        />
+      </HorizontalSlider>
     </Row>
   );
 };
 
-export default FilterSortSearch;
+export default FilterSort;
 
 interface TagsListProps {
-  tagList: IFoodTag[];
-  activeTagsList: IFoodTag[];
-  handleTagClick: (tag: IFoodTag) => void;
+  tagList: string[];
+  activeTagsList: string[];
+  handleTagClick: (tag: string) => void;
 }
 const TagsList: React.FC<TagsListProps> = ({
   tagList,
   handleTagClick,
   activeTagsList,
 }) => {
-  const isTagActive = (tag: IFoodTag) => activeTagsList.includes(tag);
+  const isTagActive = (tag: string) => activeTagsList.includes(tag);
   const activeTags = tagList.filter(isTagActive);
 
   const inactiveTags = tagList.filter((tag) => !isTagActive(tag));
@@ -74,16 +54,16 @@ const TagsList: React.FC<TagsListProps> = ({
     <>
       {activeTags.map((tag) => (
         <UtilityButton
-          key={tag.name}
-          label={tag.name.toLowerCase()}
+          key={tag}
+          label={tag.toLowerCase()}
           onClick={() => handleTagClick(tag)}
           isActive={true}
         />
       ))}
       {inactiveTags.map((tag) => (
         <UtilityButton
-          key={tag.name}
-          label={tag.name.toLowerCase()}
+          key={tag}
+          label={tag.toLowerCase()}
           onClick={() => handleTagClick(tag)}
           isActive={false}
         />
@@ -109,12 +89,18 @@ const UtilityButton: React.FC<UtilityButtonProps> = ({
     <Button
       padding="0.5rem 0.5rem"
       br="8px"
-      style={{ display: "flex", alignItems: "center", gap: "0.35rem" }} // Using flexbox for alignment and gap for spacing.
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.35rem",
+        boxShadow: "0 0 2px #000000e",
+      }}
       variant={isActive ? "primary" : "secondary"}
-      border={isActive ? "" : "1px solid #d9d9e3"}
+      border={isActive ? "" : "1px solid #ffffff"}
       onClick={onClick}
+      bg={isActive ? "" : "white"}
     >
-      {icon && ( // Conditionally render the Icon component
+      {icon && (
         <Icon
           name={icon}
           width={0.9}
