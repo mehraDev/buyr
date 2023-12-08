@@ -17,44 +17,52 @@ const CategorySlider: React.FC<CategorySliderProps> = ({
 }) => {
   const theme = useTheme();
   return (
-    <Row p={"0.5rem 1rem"}>
-      <HorizontalSlider activeChildIndex={activeCategoryIndex}>
-        {categories.map((category, index) =>
-          index === activeCategoryIndex ? (
-            <ButtonSlider
-              br="16px"
-              onClick={() => onClick(category)}
-              key={index}
-            >
-              <Text tt="cap" s="14">
-                {category}
-              </Text>
-            </ButtonSlider>
-          ) : (
-            <ButtonSlider
-              key={index}
-              color={theme.neutralColor.textSecondary}
-              border="1px solid #d9d9e3"
-              variant="secondary"
-              br="16px"
-              onClick={() => onClick(category)}
-            >
-              <Text tt="cap" s="14">
-                {category}
-              </Text>
-            </ButtonSlider>
-          )
-        )}
-      </HorizontalSlider>
-    </Row>
+    <HorizontalSlider activeChildIndex={activeCategoryIndex}>
+      {categories.map((category, index) => (
+        <ButtonSlider
+          onClick={() => onClick(category)}
+          key={index}
+          variant={index === activeCategoryIndex ? "primary" : "secondary"}
+          border="none"
+          active={index === activeCategoryIndex}
+        >
+          <Text
+            tt="cap"
+            s="16"
+            w={5}
+            c={
+              index === activeCategoryIndex
+                ? "white"
+                : theme.neutralColor.textSecondary
+            }
+          >
+            {category}
+          </Text>
+        </ButtonSlider>
+      ))}
+    </HorizontalSlider>
   );
 };
 
-interface IButtonSlider extends IButton {}
+interface IButtonSlider extends IButton {
+  active: boolean;
+}
 
 const ButtonSlider = React.forwardRef<HTMLButtonElement, IButtonSlider>(
   (props, ref) => {
-    return <Button ref={ref} {...props} padding="0.5rem 0.5rem" />;
+    const theme = useTheme();
+    return (
+      <Button
+        br="8px"
+        ref={ref}
+        {...props}
+        style={{
+          background: props.active ? theme.brandColor.primary : "#f5f5f5",
+          boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.079)",
+        }}
+        padding="0.25rem 0.5rem"
+      />
+    );
   }
 );
 

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { Backdrop } from "ui/Backdrop";
+import Button from "ui/Button";
+import Icon, { IconName } from "ui/Icon";
 import { Text, Col, Row, Box } from "ui/basic";
 
 interface IMenuButton {
@@ -30,24 +32,25 @@ const MenuButton: React.FC<IMenuButton> = ({
   );
   return (
     <>
-      <Box
+      <Button
         onClick={() => setIsMenu(!isMenu)}
         style={{
-          background: "#e91e63",
-          borderRadius: "6px",
-          boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.2)",
-          position: "fixed",
-          bottom: "1rem",
-          zIndex: isMenu ? 10 : "",
-          right: "1rem",
+          boxShadow:
+            "0 2px 4px 0 rgba(0, 0, 0, .13), 0 1px 1px 0 rgba(0, 0, 0, .11)",
         }}
-        w="initial"
-        p="1rem"
       >
         <Text c={"#fff"} s="14" tt="cap" w={6}>
           Menu
         </Text>
-      </Box>
+        {/* <Icon
+          name={IconName.}
+          width={0.9}
+          height={0.9}
+          padding="0"
+          color={theme.neutralColor.textSecondary}
+          style={{ marginRight: "2px" }}
+        /> */}
+      </Button>
       {isMenu && (
         <Backdrop>
           <Col h="100%" p="4rem 2rem">

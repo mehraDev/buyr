@@ -5,7 +5,7 @@ import { IProductFood } from "app/interfaces";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IFoodTag } from "app/interfaces/Shop/product";
 import { Drawer } from "ui/Drawer";
-import FilterSortSearch from "./components/FilterAndSort/FilterAndSort";
+import FilterSort from "./components/FilterAndSort/FilterAndSort";
 import categoriseProducts from "./utils/categoriseProducts";
 import { SearchCard } from "ui/Search";
 import ItemFoodCard from "./FoodItemCard";
@@ -13,6 +13,8 @@ import MenuButton from "./components/MenuButton";
 import CategorySlider from "./components/CategorySlider/CategorySlider";
 import FilterCard from "./components/FilterCard/FilterCard";
 import { Sticky } from "ui/Sticky";
+import Button from "ui/Button";
+import Icon, { IconName } from "ui/Icon";
 
 interface IFoodMenu {
   products: IProductFood[];
@@ -22,48 +24,55 @@ interface IFoodMenu {
 export enum ESortType {
   PriceLowToHigh = "Price: Low to High",
   PriceHighToLow = "Price: High to Low",
+  AlphabeticalAsc = "Alphabetical: A to Z",
+  AlphabeticalDesc = "Alphabetical: Z to A",
 }
 
 const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
   const theme = useTheme();
-  const [activeTags, setActiveTags] = useState<IFoodTag[]>([]);
+
+  const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [tagsList, setTagsList] = useState<string[]>([]);
+
   const filterProducts =
     activeTags.length > 0
       ? products.filter((product) =>
-          product.tags?.some((tag) => activeTags.includes(tag))
+          activeTags.every((activeTag) =>
+            product.tags?.some((tag: IFoodTag) => tag.name === activeTag)
+          )
         )
       : products;
 
   const categoryCounts: { [category: string]: number } = {};
   const [isSortDrawer, setSortDrawer] = useState(false);
-  const [tagsList, setTagsList] = useState<IFoodTag[]>([]);
 
   const toggleSortDrawer = () => {
     setSortDrawer(!isSortDrawer);
   };
 
-  const handleTagClick = (tag: IFoodTag) => {
+  const handleTagClick = (tag: string) => {
     setActiveTags((prevActiveTags) => {
       if (prevActiveTags.includes(tag)) {
-        return prevActiveTags.filter((t) => t !== tag); // Remove tag if it's already active
+        return prevActiveTags.filter((t) => t !== tag);
       } else {
-        return [...prevActiveTags, tag]; // Add tag if it's not already active
+        return [...prevActiveTags, tag];
       }
     });
   };
 
   useEffect(() => {
     const initializeTagsList = () => {
-      const extractedTags = new Set<IFoodTag>();
+      const extractedTags = new Set<string>();
       products.forEach((product) => {
         if (product.tags && Array.isArray(product.tags)) {
           product.tags.forEach((tag) => {
-            extractedTags.add(tag);
+            extractedTags.add(tag.name);
           });
         }
       });
       setTagsList(Array.from(extractedTags));
     };
+
     initializeTagsList();
   }, [products]);
 
@@ -89,12 +98,14 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
     }
   });
 
-  const [activeSort, setActiveSort] = useState<ESortType | null>(null);
+  const [activeSort, setActiveSort] = useState<ESortType>(
+    ESortType.AlphabeticalAsc
+  );
   const sortingOptions = Object.values(ESortType);
 
   const handleSortChange = (sort: ESortType) => {
     if (activeSort === sort) {
-      setActiveSort(null);
+      setActiveSort(ESortType.AlphabeticalAsc);
     } else {
       setActiveSort(sort);
     }
@@ -113,7 +124,7 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
   const [stickyHeaderOffset, setStickyHeaderOffset] = useState(0);
   const [activeCategoryIndex, setActiveCategoryIndex] = useState<number>(-1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("");
+  // const [activeCategory, setActiveCategory] = useState<string>("");
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState(0);
 
   const handleCategoryPosition = useCallback(
@@ -130,19 +141,19 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
         scrollContainer instanceof HTMLElement
           ? scrollContainer.screenTop
           : scrollContainer.scrollY;
-      let newActiveCategory = "";
+      // let newActiveCategory = "";
       let newActiveIndex = -1;
       for (const [category, position] of Object.entries(
         categoryPositionsRef.current
       )) {
         if (scrollPosition >= position - (stickyHeaderHeight + 8)) {
-          newActiveCategory = category;
+          // newActiveCategory = category;
           newActiveIndex = Object.keys(categoryPositionsRef.current).indexOf(
             category
           );
         }
       }
-      setActiveCategory(newActiveCategory.toLowerCase());
+      // setActiveCategory(newActiveCategory.toLowerCase());
       setActiveCategoryIndex(newActiveIndex);
     };
     handleScroll();
@@ -209,31 +220,74 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
           }}
           stickyStyle={{ boxShadow: "0 1px 6px 0 rgba(51, 53, 57, 0.28)" }}
         >
-          <FilterSortSearch
-            toggleDrawer={toggleSortDrawer}
-            onSearch={handleShowSearch}
-            tagList={tagsList}
-            activeTagsList={activeTags}
-            handleTagClick={handleTagClick}
-          />
-          <CategorySlider
-            onClick={handleCategoryClick}
-            categories={topLevelCategories}
-            activeCategoryIndex={activeCategoryIndex}
-          />
+          <Row a="center" j="between" style={{ gap: "1rem" }}>
+            <Row p={"0.5rem  "} style={{ overflow: "scroll" }}>
+              <CategorySlider
+                onClick={handleCategoryClick}
+                categories={topLevelCategories}
+                activeCategoryIndex={activeCategoryIndex}
+              />
+            </Row>
+
+            <Row p={"0.5rem"} w="initial" a="center">
+              <Button
+                variant="secondary"
+                border="1px solid #d9d9e3"
+                padding="  0.5rem"
+                br=".35rem"
+                onClick={handleShowSearch}
+              >
+                <Icon
+                  name={IconName.Search}
+                  borderRadius={0}
+                  padding="0"
+                  width={1}
+                  height={1}
+                  color={theme.neutralColor.textTertiary}
+                />
+              </Button>
+            </Row>
+          </Row>
         </Sticky>
       </Col>
       <CategoryViewer
         scrollContainer={scrollContainer}
         products={filterProducts}
-        sort={activeSort}
+        activeSort={activeSort}
         onCategoryPositionsUpdate={handleCategoryPosition}
       />
-      <MenuButton
-        activeCategory={activeCategory}
-        onCategoryClick={handleCategoryClick}
-        categoryCounts={categoryCounts}
-      />
+      <Row
+        style={{
+          position: "fixed",
+          bottom: "1.5rem",
+        }}
+        p={"1rem "}
+      >
+        <Row
+          style={{
+            gap: "1rem",
+            background: theme.neutralColor.bgLayout,
+            boxShadow: "0 0 2px #00000027",
+          }}
+          br="14px"
+          p={"1rem "}
+          j="between"
+          a="center"
+        >
+          <FilterSort
+            toggleDrawer={toggleSortDrawer}
+            tagList={tagsList}
+            activeTagsList={activeTags}
+            handleTagClick={handleTagClick}
+          />
+          {/* <MenuButton
+            activeCategory={activeCategory}
+            onCategoryClick={handleCategoryClick}
+            categoryCounts={categoryCounts}
+          /> */}
+        </Row>
+      </Row>
+
       <Drawer isOpen={isSearch} h="100%">
         <SearchCard
           onClose={() => setIsSearch(false)}

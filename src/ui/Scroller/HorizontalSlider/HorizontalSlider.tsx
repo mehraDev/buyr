@@ -38,7 +38,12 @@ const HorizontalSlider: React.FC<IHorizontalSliderProps> = ({
   useEffect(() => {
     if (sliderRef.current && childRefs.current[activeChildIndex]) {
       const scrollLeftPosition = childRefs.current[activeChildIndex].offsetLeft;
-      sliderRef.current.scrollLeft = scrollLeftPosition;
+      if (activeChildIndex === 0) {
+        sliderRef.current.scrollLeft = 0;
+        console.log("inital", sliderRef.current.scrollLeft);
+      } else {
+        sliderRef.current.scrollLeft = scrollLeftPosition;
+      }
     }
   }, [activeChildIndex, children]);
 

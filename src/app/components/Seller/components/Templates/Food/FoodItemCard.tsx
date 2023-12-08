@@ -74,7 +74,10 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
           <Row
             w={imgWidth}
             h={imgHeight}
-            style={{ borderRadius: imageRadius }}
+            style={{
+              borderRadius: imageRadius,
+              boxShadow: "rgb(0 0 0 / 11%) 1px 3px 3px",
+            }}
             onClick={previewHandler}
           >
             <Img

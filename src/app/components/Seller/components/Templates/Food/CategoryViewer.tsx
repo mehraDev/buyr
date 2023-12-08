@@ -9,7 +9,7 @@ import { ESortType } from "./FoodMenu";
 interface ICategoryviewer {
   products: IProductFood[];
   scrollContainer?: React.RefObject<HTMLDivElement>;
-  sort: ESortType | null;
+  activeSort: ESortType;
   onActive?: (value: string) => void;
   onCategoryPositionsUpdate: (category: string, postion: number) => void;
 }
@@ -18,7 +18,7 @@ const CategoryViewer: React.FC<ICategoryviewer> = ({
   scrollContainer,
   products,
   onCategoryPositionsUpdate,
-  sort,
+  activeSort,
 }) => {
   const categorisedProducts = categoriseProducts(products);
   const [expandedCategories, setExpandedCategories] = useState<{
@@ -41,6 +41,7 @@ const CategoryViewer: React.FC<ICategoryviewer> = ({
     <>
       {Object.keys(categorisedProducts).map((category) => (
         <Category
+          activeSort={activeSort}
           isTopLevel={true}
           category={categorisedProducts[category]}
           scrollContainer={scrollContainer}

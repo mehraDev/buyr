@@ -139,14 +139,10 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
             style={{ borderTop: `1px solid #F7F7F7`, minHeight: "100vh" }}
             h="100%"
           >
-            <FoodMenu
-              stickyPointHeader={stickyPointHeader}
-              products={products}
-            />
+            <FoodMenu products={products} />
           </Row>
         </Col>
         <Drawer isOpen={isAuthModalOpen ? true : false}>
-          {/* <Col h="100%" p={"1rem"}> */}
           <Col style={{ background: theme.neutralColor.bgContainer }} p="1rem">
             <Row p={"1rem"} j="between">
               <Text>Login to continure</Text>
@@ -155,7 +151,6 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
 
             <Row p={"1rem"}>Please Login</Row>
           </Col>
-          {/* </Col> */}
         </Drawer>
       </Col>
     </>
