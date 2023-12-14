@@ -4,7 +4,7 @@ import { getSellerPrivateCollection } from "app/services/constants/SellerConstan
 import { DocumentFields } from "firebaseServices/firestore/Document/interfaces";
 import { SELLER_PRODUCTS_FILE, SELLER_PRODUCTS_FOOD_LIST } from "./constants";
 import { resolveRelativeImageUrls } from "app/services/MenuHost/productImages";
-import { EShop } from "app/enums/MenuHost";
+import { EShop } from "app/enums";
 
 const getProductsFoodByID = async (id: string): Promise<IProductFood[]> => {
   try {

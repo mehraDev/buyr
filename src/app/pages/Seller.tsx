@@ -11,10 +11,8 @@ import getSellerComponent from "app/components/Seller";
 import theme from "ui/Utils/Media/Theme/theme";
 import { ThemeProvider } from "styled-components";
 import SEOHead from "app/components/Seller/components/SEOHead/SEOHead";
-import { useAuth } from "app/hooks/useAuth";
-import { AuthModalProvider, useAuthModal } from "app/contexts/useAuthModal";
-import { Drawer } from "ui/Drawer";
-import { Col, Row } from "ui/basic";
+import { AuthModalProvider } from "app/contexts/useAuthModal";
+import PWAManifestLinker from "app/components/Seller/pwa/PWAManifestLinker";
 
 const shopTheme = {
   ...theme,
@@ -66,13 +64,19 @@ const Seller: React.FC = () => {
 
   const StaticShop = getSellerComponent(profile.type);
 
-  if (!StaticShop) {
+  if (!StaticShop || !sellerUserId) {
     return <div>Invalid Shop Type</div>;
   }
   return (
     <AuthModalProvider>
       <ThemeProvider theme={shopTheme}>
         <SEOHead profile={profile} />
+        <PWAManifestLinker
+          shopType={profile.type}
+          shopName={profile.name}
+          userName={sellerUserId}
+          id={profile.id}
+        />
         <StaticShop profile={profile} />
       </ThemeProvider>
     </AuthModalProvider>

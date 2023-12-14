@@ -1,7 +1,7 @@
 import { IProduct } from "app/interfaces";
 import { getUrlImageStorage } from "firebaseServices/storage";
 import { getLocationPoolProductsImages, getLocationSellerProductsImages } from "../constants/MenuHost";
-import { EImageSource, EShop } from "app/enums/MenuHost";
+import { EImageSource, EShop } from "app/enums";
 
 const getPersonalImageURL = (productName: string, sellerID: string): string => {
   const absoluteLocation = getLocationSellerProductsImages(sellerID) + productName;

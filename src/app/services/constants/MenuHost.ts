@@ -1,4 +1,4 @@
-import { EShop } from "app/enums/MenuHost";
+import { EShop } from "app/enums";
 
 const STORAGE_ROOT_LOCATION = "s";
 const STORAGE_SELLER_ROOT_LOCATION = `${STORAGE_ROOT_LOCATION}/sellers`;
