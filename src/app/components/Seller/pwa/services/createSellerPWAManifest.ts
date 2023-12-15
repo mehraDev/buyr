@@ -36,6 +36,7 @@ function getFoodSellerIcons(id: string): IconsManifest[] {
   const logoSizesArray = [LogoSizes.Small, LogoSizes.Medium, LogoSizes.Large, LogoSizes.ExtraLarge, LogoSizes.Ultra, LogoSizes.PwaDefault];
   return logoSizesArray.map((size) => {
     const iconUrl = getSellerLogoByID(id, size);
+    console.log(iconUrl);
     return {
       src: iconUrl,
       sizes: `${size}x${size}`,
