@@ -23,6 +23,7 @@ interface ICategoryList {
   scrollContainer?: React.RefObject<HTMLDivElement>;
   expandedCategories: { [category: string]: boolean };
   onCategoryToggle: (category: string) => void;
+  addButton?: boolean;
 }
 const Category: React.FC<ICategoryList> = ({
   category,
@@ -33,6 +34,7 @@ const Category: React.FC<ICategoryList> = ({
   expandedCategories,
   onCategoryToggle,
   isTopLevel = false,
+  addButton,
 }) => {
   const categoryContainerRef = useRef<HTMLDivElement>(null);
   const isExpanded = expandedCategories[categoryName];
@@ -153,7 +155,11 @@ const Category: React.FC<ICategoryList> = ({
                 p={"1rem 0.5rem"}
                 style={{ borderBottom: `1px dotted rgb(225, 225, 229)` }}
               >
-                <ItemFoodCard item={{ ...product }} key={product.id} />
+                <ItemFoodCard
+                  addButton={addButton}
+                  item={{ ...product }}
+                  key={product.id}
+                />
               </Row>
             ))}
           </Col>
@@ -168,6 +174,7 @@ const Category: React.FC<ICategoryList> = ({
                 scrollContainer={scrollContainer}
                 expandedCategories={expandedCategories}
                 onCategoryToggle={onCategoryToggle}
+                addButton={addButton}
               />
             )
           )}

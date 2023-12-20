@@ -201,6 +201,7 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
     };
   }, [products]);
 
+  const ordering = true;
   return (
     <Col p={"0rem 0rem 5rem"} ref={stickyRef}>
       <Col
@@ -255,6 +256,7 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
         products={filterProducts}
         activeSort={activeSort}
         onCategoryPositionsUpdate={handleCategoryPosition}
+        ordering={ordering}
       />
       <Row
         style={{

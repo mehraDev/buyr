@@ -12,16 +12,19 @@ export enum EItemCardFood {
   Strip = "strip",
   Preview = "preview",
 }
+
 export interface IItemFoodCard {
   item: IProductFood;
   mode?: EItemCardFood;
   showCategory?: boolean;
+  addButton?: boolean;
 }
 
 const ItemFoodCard: React.FC<IItemFoodCard> = ({
   item,
   mode = EItemCardFood.Strip,
   showCategory = false,
+  addButton,
 }) => {
   const theme = useTheme();
 
@@ -67,25 +70,57 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
   const handleVariantClick = (variant: IVariant) => {
     setSelectedVariant(variant);
   };
+  const alignWrapper = addButton && !item.image ? "center" : "start";
+  const showAddButton = addButton;
   return (
     <>
-      <Box fd={fd} a="start" style={{ gap: isRow ? "1rem" : "" }}>
+      <Box
+        fd={fd}
+        a={alignWrapper}
+        style={{ gap: isRow ? "1rem" : "" }}
+        j="between"
+      >
         {item.image ? (
-          <Row
+          <Col
             w={imgWidth}
             h={imgHeight}
-            style={{
-              borderRadius: imageRadius,
-              boxShadow: "rgb(0 0 0 / 11%) 1px 3px 3px",
-            }}
-            onClick={previewHandler}
+            style={{ position: "relative" }}
+            a="center"
           >
-            <Img
-              src={item.image}
-              alt={item.name}
-              br={imageRadius}
-              style={{ cursor: "pointer" }}
-            />
+            <Row
+              style={{
+                borderRadius: imageRadius,
+                boxShadow: "rgb(0 0 0 / 11%) 1px 3px 3px",
+              }}
+              onClick={previewHandler}
+            >
+              <Img
+                src={item.image}
+                alt={item.name}
+                br={imageRadius}
+                style={{ cursor: "pointer" }}
+              />
+            </Row>
+            {showAddButton && (
+              <Button
+                style={{
+                  position: "absolute",
+                  bottom: "-0.5rem",
+                  right: "1rem",
+                }}
+              >
+                ADD
+              </Button>
+            )}
+          </Col>
+        ) : showAddButton ? (
+          <Row
+            w="initial"
+            a="center"
+            style={{ position: "relative" }}
+            p={" 0 1rem 0 0 "}
+          >
+            <Button style={{}}>ADD</Button>
           </Row>
         ) : null}
         <Col p={detailsPadding} j="center" style={{ gap: detailsGap }}>
