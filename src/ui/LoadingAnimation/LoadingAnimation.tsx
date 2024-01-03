@@ -1,9 +1,23 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
-const LoadingAnimation = () => {
+interface ILoadingAnimation {
+  iconType?: boolean;
+  bw?: string;
+  height?: string;
+  width?: string;
+  p?: string;
+}
+
+const LoadingAnimation: React.FC<ILoadingAnimation> = ({
+  iconType = false,
+  bw = "4px",
+  height = "24px",
+  width = "24px",
+  p = "2rem",
+}) => {
   return (
-    <Container>
-      <LoadingSpinner />
+    <Container p={p} iconType={iconType}>
+      <LoadingSpinner bw={bw} height={height} width={width} />
     </Container>
   );
 };
@@ -17,22 +31,26 @@ const spinAnimation = keyframes`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ p: string; iconType: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100vw;
-  position: fixed;
-  background-color: #f8f8f8;
+  width: ${({ iconType }) => (iconType ? "initial" : "100%")};
+  padding: ${(props) => props.p};
 `;
 
-const LoadingSpinner = styled.div`
-  width: 50px;
-  height: 50px;
-  border-width: 4px;
-    border-style: dotted;
-    border-color: rgba(255, 152, 0, 0.89) rgb(190 190 190 / 31%) rgba(255, 152, 0, 0.88) rgb(210 210 210 / 43%);
+const LoadingSpinner = styled.div<{
+  bw: string;
+  height: string;
+  width: string;
+}>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  border-style: solid;
+  border-width: ${(props) => props.bw};
+  border-color: rgb(5 96 185) rgb(5 96 185) rgb(211 211 211)
+    rgba(210, 210, 210, 0.43);
   border-radius: 50%;
   animation: ${spinAnimation} 0.7s linear infinite;
 `;

@@ -67,5 +67,17 @@ declare module "styled-components" {
       boxShadow: string;
       boxShadowSecondary: string;
     };
+    errorColor: {
+      errorBg: string;
+      errorBgHover: string;
+      errorBorder: string;
+      errorBorderHover: string;
+      errorHover: string;
+      error: string;
+      errorActive: string;
+      errorTextHover: string;
+      errorText: string;
+      errorTextActive: string;
+    };
   }
 }

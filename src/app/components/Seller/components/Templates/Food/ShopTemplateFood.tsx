@@ -11,8 +11,15 @@ import getSellerContactsById from "app/services/Seller/Profile/Contacts/getSelle
 import { getSellerLogoByID } from "app/services/Seller/Profile";
 import { Drawer } from "ui/Drawer";
 import categoriseProducts from "./utils/categoriseProducts";
-import { useAuthModal } from "app/contexts/useAuthModal";
+
 import Icon, { IconName } from "ui/Icon";
+import {
+  FoodCartProvider,
+  useFoodCart,
+} from "app/components/Seller/Cart/Food/FoodCartContext";
+import FoodOrderSummary from "app/components/Seller/components/OrderSummary/FoodOrderSummary";
+import { useAuth } from "app/contexts/auth/useAuth";
+import AuthModal from "app/components/auth/AuthModal";
 
 interface IShopTemplateFood {
   profile: ISellerProfile;
@@ -31,8 +38,6 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
   const { name: shopName } = profile;
   const containerRef = useRef<HTMLDivElement>(null);
   const profileCardRef = useRef<HTMLDivElement>(null);
-  const { isAuthModalOpen, hideAuthModal } = useAuthModal();
-  console.log(!isAuthModalOpen);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,52 +112,44 @@ const ShopTemplateFood: React.FC<IShopTemplateFood> = ({ profile }) => {
     }
   });
 
-  console.log(categoriseProducts(products));
-
+  const { showAuthModal } = useAuth();
   return (
     <>
       <SplashScreen name={shopName} timer={1} />
-      <Col
-        ref={containerRef}
-        m={[0]}
-        style={{
-          height: containerHeight,
-        }}
-      >
-        <Col style={{ background: "white" }}>
-          <Box ref={profileCardRef} p={"1.5rem 1rem"}>
-            <Col
-              a="center"
-              style={{
-                gap: "1rem",
-              }}
+      <FoodCartProvider sellerId={sellerID}>
+        <Col
+          ref={containerRef}
+          m={[0]}
+          style={{
+            height: containerHeight,
+          }}
+        >
+          <Col style={{ background: "white" }}>
+            <Box ref={profileCardRef} p={"1.5rem 1rem"}>
+              <Col
+                a="center"
+                style={{
+                  gap: "1rem",
+                }}
+              >
+                <ProfileCard
+                  contacts={contacts}
+                  profile={profile}
+                  logo={logoUrl}
+                />
+              </Col>
+            </Box>
+
+            <Row
+              style={{ borderTop: `1px solid #F7F7F7`, minHeight: "100vh" }}
+              h="100%"
             >
-              <ProfileCard
-                contacts={contacts}
-                profile={profile}
-                logo={logoUrl}
-              />
-            </Col>
-          </Box>
-
-          <Row
-            style={{ borderTop: `1px solid #F7F7F7`, minHeight: "100vh" }}
-            h="100%"
-          >
-            <FoodMenu products={products} />
-          </Row>
-        </Col>
-        <Drawer isOpen={isAuthModalOpen ? true : false}>
-          <Col style={{ background: theme.neutralColor.bgContainer }} p="1rem">
-            <Row p={"1rem"} j="between">
-              <Text>Login to continure</Text>
-              <Icon name={IconName.Close} onClick={hideAuthModal} color="red" />
+              <FoodMenu products={products} />
             </Row>
-
-            <Row p={"1rem"}>Please Login</Row>
           </Col>
-        </Drawer>
-      </Col>
+        </Col>
+        <AuthModal isVisible={showAuthModal} />
+      </FoodCartProvider>
     </>
   );
 };

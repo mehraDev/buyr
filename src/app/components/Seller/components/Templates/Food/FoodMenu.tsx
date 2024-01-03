@@ -1,4 +1,4 @@
-import { Col, Row } from "ui/basic";
+import { Col, Row, Text } from "ui/basic";
 import CategoryViewer from "./CategoryViewer";
 import { useTheme } from "styled-components";
 import { IProductFood } from "app/interfaces";
@@ -9,12 +9,14 @@ import FilterSort from "./components/FilterAndSort/FilterAndSort";
 import categoriseProducts from "./utils/categoriseProducts";
 import { SearchCard } from "ui/Search";
 import ItemFoodCard from "./FoodItemCard";
-import MenuButton from "./components/MenuButton";
+// import MenuButton from "./components/MenuButton";
 import CategorySlider from "./components/CategorySlider/CategorySlider";
 import FilterCard from "./components/FilterCard/FilterCard";
 import { Sticky } from "ui/Sticky";
 import Button from "ui/Button";
 import Icon, { IconName } from "ui/Icon";
+import FoodOrderSummary from "app/components/Seller/components/OrderSummary/FoodOrderSummary";
+import { useFoodCart } from "app/components/Seller/Cart/Food/FoodCartContext";
 
 interface IFoodMenu {
   products: IProductFood[];
@@ -30,10 +32,10 @@ export enum ESortType {
 
 const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
   const theme = useTheme();
-
+  const [showCart, setShowCart] = useState(false);
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [tagsList, setTagsList] = useState<string[]>([]);
-
+  const { cart } = useFoodCart();
   const filterProducts =
     activeTags.length > 0
       ? products.filter((product) =>
@@ -235,6 +237,7 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
                 variant="secondary"
                 border="1px solid #d9d9e3"
                 padding="  0.5rem"
+                bg="white"
                 br=".35rem"
                 onClick={handleShowSearch}
               >
@@ -272,24 +275,32 @@ const FoodMenu: React.FC<IFoodMenu> = ({ products, scrollContainer }) => {
             boxShadow: "0 0 2px #00000027",
           }}
           br="14px"
-          p={"1rem "}
           j="between"
           a="center"
         >
-          <FilterSort
-            toggleDrawer={toggleSortDrawer}
-            tagList={tagsList}
-            activeTagsList={activeTags}
-            handleTagClick={handleTagClick}
-          />
-          {/* <MenuButton
-            activeCategory={activeCategory}
-            onCategoryClick={handleCategoryClick}
-            categoryCounts={categoryCounts}
-          /> */}
+          <Row>
+            <FilterSort
+              toggleDrawer={toggleSortDrawer}
+              tagList={tagsList}
+              activeTagsList={activeTags}
+              handleTagClick={handleTagClick}
+            />
+          </Row>
+          <Row
+            w="initial"
+            h="100%"
+            p={"0.5rem"}
+            style={{ background: theme.neutralColor.bgContainer }}
+          >
+            <Button onClick={() => setShowCart(true)}>
+              <Icon name={IconName.Cart} />
+            </Button>
+          </Row>
         </Row>
       </Row>
-
+      <Drawer isOpen={showCart} h="100%">
+        <FoodOrderSummary cart={cart} onClose={() => setShowCart(false)} />
+      </Drawer>
       <Drawer isOpen={isSearch} h="100%">
         <SearchCard
           onClose={() => setIsSearch(false)}

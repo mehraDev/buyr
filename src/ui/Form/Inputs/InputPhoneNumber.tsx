@@ -1,15 +1,27 @@
 import React, { ChangeEvent } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { InputWrapper, Label } from "./styles";
-import { IInput } from "./interface";
 import Error from "ui/Error";
-interface IInputInteger extends IInput {
-  value: number | string | undefined;
-  onChange: (value: number) => void;
+import { Row } from "ui/basic";
+
+interface IInputPhoneNumber {
+  value: string | undefined;
+  onChange: (value: string) => void;
   width?: string;
   borderColor?: string;
   error?: string;
+  label?: string;
+  required?: boolean;
+  labelTop?: boolean;
+  placeholder?: string;
 }
+
+const PhoneNumberWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CountryCode = styled.span``;
 
 const Input = styled.input<{ borderColor: string }>`
   color: ${({ theme }) => theme.neutralColor.text};
@@ -20,7 +32,7 @@ const Input = styled.input<{ borderColor: string }>`
   border-color: ${({ theme }) => theme.neutralColor.border};
   transition: border-color 0.3s ease;
   width: ${({ width }) => (width ? width : "")};
-  border-radius: 4px;
+  border-radius: "0px 4px 4px 0px";
   border-style: solid;
   &:focus {
     border-color: ${({ borderColor, theme }) =>
@@ -36,10 +48,11 @@ const Input = styled.input<{ borderColor: string }>`
   }
 `;
 
-const InputInteger: React.FC<IInputInteger> = ({
+const InputPhoneNumber: React.FC<IInputPhoneNumber> = ({
   label,
   value,
   onChange,
+  placeholder,
   required,
   labelTop = true,
   width,
@@ -47,12 +60,13 @@ const InputInteger: React.FC<IInputInteger> = ({
   error,
 }) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = Number(event.target.value);
-    if (!isNaN(inputValue) && (!required || inputValue >= 0)) {
+    const inputValue = event.target.value;
+    // Ensure that the input is numeric and doesn't exceed 10 digits
+    if (/^\d{0,10}$/.test(inputValue)) {
       onChange(inputValue);
     }
   };
-
+  const theme = useTheme();
   return (
     <InputWrapper top={labelTop}>
       {label && (
@@ -61,20 +75,32 @@ const InputInteger: React.FC<IInputInteger> = ({
           {required && "*"}
         </Label>
       )}
-      <div>
+      <PhoneNumberWrapper>
+        <Row
+          a="center"
+          j="between"
+          w="initial"
+          style={{ borderRadius: "4px 0px 0px 4px" }}
+          //   bg={theme.neutralColor.textQuaternary}
+          h="100%"
+          p={"0.25rem 0.5rem"}
+        >
+          <CountryCode>+91</CountryCode>
+        </Row>
         <Input
-          type="number"
+          type="tel"
           value={value}
           onChange={handleInputChange}
           required={required}
-          placeholder="0"
+          placeholder={placeholder ? placeholder : "1234567890"}
           width={width}
+          maxLength={10}
           borderColor={borderColor}
         />
-        {error && <Error>{error}</Error>}
-      </div>
+      </PhoneNumberWrapper>
+      {error && <Error>{error}</Error>}
     </InputWrapper>
   );
 };
 
-export default InputInteger;
+export default InputPhoneNumber;

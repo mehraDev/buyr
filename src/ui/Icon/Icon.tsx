@@ -28,6 +28,9 @@ import {
   faDownload,
   faLocationDot,
   faArrowDownShortWide,
+  faEyeSlash,
+  faEye,
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -43,7 +46,8 @@ export enum IconName {
   Notification = "notification",
   FilterArrow = "filterArrow",
   LeftArrow = "leftArrow",
-
+  PassHide = "passwordhide",
+  PassShow = "passwordshow",
   RightArrow = "rightArrow",
   Bars = "bars",
   Ellipsis = "ellipsis",
@@ -70,6 +74,7 @@ export enum IconName {
   Leaf = "leaf",
   Share = "share",
   Search = "search",
+  Cart = "cart",
 }
 
 interface Icons {
@@ -107,6 +112,9 @@ export const icons: Icons = {
   upArrow: faSortUp,
   share: faArrowUpFromBracket,
   filterArrow: faArrowDownShortWide,
+  passwordshow: faEye,
+  passwordhide: faEyeSlash,
+  cart: faCartShopping,
 };
 
 interface IconProps {

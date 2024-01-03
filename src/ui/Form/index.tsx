@@ -7,6 +7,7 @@ import DropdownInput from "./Inputs/DropdownInput";
 import InputText from "./Inputs/InputText";
 import InputInteger from "./Inputs/InputInteger";
 import InputSearch from "./Inputs/InputSearch";
+import InputPhoneNumber from "./Inputs/InputPhoneNumber";
 
 export default Form;
 export {
@@ -17,4 +18,5 @@ export {
   InputRadio,
   DropdownInput,
   InputImage,
+  InputPhoneNumber,
 };

@@ -11,8 +11,8 @@ import getSellerComponent from "app/components/Seller";
 import theme from "ui/Utils/Media/Theme/theme";
 import { ThemeProvider } from "styled-components";
 import SEOHead from "app/components/Seller/components/SEOHead/SEOHead";
-import { AuthModalProvider } from "app/contexts/useAuthModal";
 import PWAManifestLinker from "app/components/Seller/pwa/PWAManifestLinker";
+import { AuthProvider } from "app/contexts/auth";
 
 const shopTheme = {
   ...theme,
@@ -68,7 +68,7 @@ const Seller: React.FC = () => {
     return <div>Invalid Shop Type</div>;
   }
   return (
-    <AuthModalProvider>
+    <AuthProvider>
       <ThemeProvider theme={shopTheme}>
         <SEOHead profile={profile} />
         <PWAManifestLinker
@@ -79,7 +79,7 @@ const Seller: React.FC = () => {
         />
         <StaticShop profile={profile} />
       </ThemeProvider>
-    </AuthModalProvider>
+    </AuthProvider>
   );
 };
 

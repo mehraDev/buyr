@@ -23,6 +23,9 @@ export interface IBox {
   j?: "start" | "end" | "center" | "between" | "around" | "evenly";
   a?: "start" | "end" | "center" | "stretch";
   br?: string;
+  hasOutline?: boolean;
+  bg?: string;
+  gap?: string;
 }
 
 const Box = styled.div<IBox>`
@@ -79,6 +82,14 @@ const Box = styled.div<IBox>`
         return "flex-start";
     }
   }};
+  background: ${({ bg }) => {
+    return bg ? bg : "";
+  }};
+  border: ${(props) => (props.hasOutline ? "2px solid #000" : "none")};
+  gap: ${({ gap }) => {
+    return gap ? gap : "";
+  }};
+  white-space: nowrap;
 `;
 
 export default Box;

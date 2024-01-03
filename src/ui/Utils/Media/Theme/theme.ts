@@ -60,6 +60,18 @@ const lineHeight = {
   lineHeightHeading4: 1.4,
   lineHeightHeading5: 1.5,
 };
+const errorColor = {
+  errorBg: "#fff2f0",
+  errorBgHover: "#ffefed",
+  errorBorder: "#ffc9c4",
+  errorBorderHover: "#ffa19c",
+  errorHover: "#ff7573",
+  error: "#f5474a",
+  errorActive: "#cf3239",
+  errorTextHover: "#ff7573",
+  errorText: "#f5474a",
+  errorTextActive: "#cf3239",
+};
 const shadow = {
   boxShadowSecondary: "rgba(60, 66, 87, 0.08) 0px 15px 35px 0px, rgba(0, 0, 0, 0.12) 0px 5px 15px 0px",
   boxShadow: "0 6px 16px 0 rgba(0, 0, 0, 0.08),0 3px 6px -4px rgba(0, 0, 0, 0.12),0 9px 28px 8px rgba(0, 0, 0, 0.05)",
@@ -71,6 +83,7 @@ const theme = {
   font,
   lineHeight,
   shadow,
+  errorColor,
 };
 
 export default theme;

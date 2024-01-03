@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes, forwardRef } from "react";
 import styled from "styled-components";
+import LoadingAnimation from "ui/LoadingAnimation/LoadingAnimation";
 import theme from "ui/Utils/Media/Theme/theme";
 
 export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,6 +15,7 @@ export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   border?: string;
   br?: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, IButton>(
@@ -25,6 +27,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       color,
       bg,
       border,
+      loading = false,
       br,
       disabled = false,
       ...rest
@@ -44,43 +47,52 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
         disabled={disabled}
       >
         {children}
+        {loading && (
+          <LoadingIcon
+            iconType={true}
+            p="0"
+            width="1rem"
+            height="1rem"
+            bw="2px"
+          />
+        )}
       </ButtonWrapper>
     );
   }
 );
 const ButtonWrapper = styled.button<IButton>`
-  background-color: ${({ bg, variant, disabled }) =>
-    disabled
-      ? variant === "primary"
-        ? theme.neutralColor.textTertiary
-        : "transparent"
-      : bg ||
-        (variant === "primary" ? theme.brandColor.primary : "transparent")};
+  background-color: ${({ bg, variant, disabled }) => {
+    if (disabled) return theme.neutralColor.textTertiary;
+    if (bg) return bg;
+    if (variant === "primary") return theme.brandColor.primary;
+    if (variant === "secondary") return theme.neutralColor.bgContainer;
+  }};
+  // disabled
+  //   ? variant === "primary"
+  //     ? theme.neutralColor.textTertiary
+  //     : "transparent"
+  //   : bg ||
+  //     (variant === "primary" ? theme.brandColor.primary : "transparent")};
 
   color: ${({ color, variant, disabled }) => {
-    if (color) {
-      if (disabled && variant === "secondary") {
-        return theme.neutralColor.textTertiary;
-      } else {
-        return color;
-      }
-    } else {
-      return variant === "primary" ? "#ffffff" : theme.brandColor.primary;
-    }
+    if (disabled) return theme.neutralColor.textTertiary;
+    if (color) return color;
+    if (variant === "primary") return "#ffffff";
+    if (variant === "secondary") return theme.brandColor.primary;
   }};
 
   border: ${({ color, border, variant, disabled }) => {
     if (border) {
       return border;
     } else if (variant === "primary") {
-      return `1px solid ${theme.brandColor.primary}`;
+      return "none";
     } else if (variant === "secondary") {
       if (disabled) {
         return `1px solid ${theme.neutralColor.textTertiary}`;
       } else if (color) {
         return `1px solid ${color}`;
       } else {
-        return `1px solid ${theme.brandColor.primary}`;
+        return "none";
       }
     } else {
       return disabled && variant === "secondary"
@@ -145,5 +157,8 @@ const ButtonWrapper = styled.button<IButton>`
 const ButtonUnderlined = styled(Button)`
   text-decoration: underline;
 `;
+
+const LoadingIcon = styled(LoadingAnimation)``;
+
 export { ButtonUnderlined };
 export default Button;

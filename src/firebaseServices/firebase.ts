@@ -4,11 +4,13 @@ import { browserLocalPersistence, getAuth, setPersistence } from "firebase/auth"
 import firebaseConfig from "./firebase-config";
 import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions(app);
 setPersistence(auth, browserLocalPersistence)
   .then(() => {
     // console.log("Offline persistence enabled");
@@ -20,4 +22,4 @@ setPersistence(auth, browserLocalPersistence)
 enableIndexedDbPersistence(db);
 
 const storage = getStorage(app);
-export { app, analytics, auth, db, storage };
+export { app, analytics, auth, db, storage, functions };

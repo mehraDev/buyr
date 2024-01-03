@@ -2,10 +2,10 @@ import { IProductFood } from "app/interfaces";
 import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { Box, Col, Img, Row, Text } from "ui/basic";
-
 import Button from "ui/Button";
 import { IVariant } from "app/interfaces/Shop/product";
 import DrawerPreviewProduct from "../../DrawerPreviewProduct/DrawerPreviewProduct";
+import CartItemUpdateButton from "app/components/Seller/Cart/Food/CartItemUpdateButton";
 
 export enum EItemCardFood {
   Card = "card",
@@ -27,9 +27,8 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
   addButton,
 }) => {
   const theme = useTheme();
-
   const [preview, setPreview] = useState<IProductFood | null>(null);
-
+  const [isItemSelector, setIsItemSelector] = useState(false);
   const handleClosePreview = () => {
     setPreview(null);
   };
@@ -72,6 +71,7 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
   };
   const alignWrapper = addButton && !item.image ? "center" : "start";
   const showAddButton = addButton;
+
   return (
     <>
       <Box
@@ -102,25 +102,22 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
               />
             </Row>
             {showAddButton && (
-              <Button
-                style={{
-                  position: "absolute",
-                  bottom: "-0.5rem",
-                  right: "1rem",
-                }}
-              >
-                ADD
-              </Button>
+              <Row w="80%">
+                <CartItemUpdateButton
+                  item={item}
+                  openVariantSelector={() => setIsItemSelector(true)}
+                />
+              </Row>
             )}
           </Col>
         ) : showAddButton ? (
-          <Row
-            w="initial"
-            a="center"
-            style={{ position: "relative" }}
-            p={" 0 1rem 0 0 "}
-          >
-            <Button style={{}}>ADD</Button>
+          <Row w="64%" j="center" a="center">
+            <Row w="80%">
+              <CartItemUpdateButton
+                item={item}
+                openVariantSelector={() => setIsItemSelector(true)}
+              />
+            </Row>
           </Row>
         ) : null}
         <Col p={detailsPadding} j="center" style={{ gap: detailsGap }}>
@@ -226,6 +223,45 @@ const ItemFoodCard: React.FC<IItemFoodCard> = ({
             <ItemFoodCard item={preview} mode={EItemCardFood.Preview} />
           </Row>
         )}
+      </DrawerPreviewProduct>
+      <DrawerPreviewProduct
+        bg="#fff2f3"
+        isOpen={isItemSelector}
+        onClose={() => setIsItemSelector(false)}
+      >
+        <Col
+          style={{
+            boxShadow: theme.shadow.boxShadowSecondary,
+            background: theme.neutralColor.bgContainer,
+            borderRadius: "8px",
+          }}
+        >
+          <ItemFoodCard item={item} />
+          <Row>
+            <Col>
+              <Row>
+                <Text s="16" w={6}>
+                  Select variant
+                </Text>
+              </Row>
+              <Col>
+                {item.variants?.map((variant) => (
+                  <Row>
+                    <Col>
+                      <Text s="14" w={5}>
+                        {variant.name}
+                      </Text>
+                      <Text s="14" w={4}>
+                        &#x20B9; {variant.price}
+                      </Text>
+                    </Col>
+                    <CartItemUpdateButton item={item} variant={variant} />
+                  </Row>
+                ))}
+              </Col>
+            </Col>
+          </Row>
+        </Col>
       </DrawerPreviewProduct>
     </>
   );

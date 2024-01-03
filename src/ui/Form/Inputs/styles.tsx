@@ -6,11 +6,12 @@ interface ILabel {
 
 interface IInputWrapper {
   top?: boolean;
+  width?: string;
 }
 
 export const InputWrapper = styled.div<IInputWrapper>`
   display: flex;
-  width: 100%;
+  width: ${({ width }) => (width ? width : "100%")};
   flex-direction: ${({ top }) => (top ? "column" : "row")};
   align-items: ${({ top }) => (top ? "" : "center")};
 `;
