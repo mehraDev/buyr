@@ -1,5 +1,6 @@
 import { User as FirebaseUser, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "firebaseServices/firebase";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { auth, functions } from "firebaseServices/firebase";
 
 type User = FirebaseUser | null;
 
@@ -31,10 +32,13 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-export async function signupUser(email: string, password: string): Promise<UserCredential> {
+export async function signupUser(email: string, password: string): Promise<any> {
+  const buyerSignupFunction = httpsCallable(functions, "buyerSignup");
+
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return userCredential;
+    await buyerSignupFunction({ email, password });
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
   } catch (error) {
     throw error;
   }

@@ -38,8 +38,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((user) => {
+      console.log("User is: ", user);
       if (user) {
         setIsAuthenticated(true);
+        setShowAuthModal(false);
       } else {
         setIsAuthenticated(false);
       }
