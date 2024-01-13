@@ -17,7 +17,7 @@ import {
   FoodCartProvider,
   useFoodCart,
 } from "app/components/Seller/Cart/Food/FoodCartContext";
-import FoodOrderSummary from "app/components/Seller/components/OrderSummary/FoodOrderSummary";
+import FoodOrderSummary from "app/components/Seller/components/OrderSummary/Food/FoodOrderSummary";
 import { useAuth } from "app/contexts/auth/useAuth";
 import AuthModal from "app/components/auth/AuthModal";
 

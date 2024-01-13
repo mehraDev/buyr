@@ -1,6 +1,6 @@
 import { ISellerContacts } from "app/interfaces/Shop/Contacts";
 import { getSellerPrivateCollection } from "app/services/constants/SellerConstants";
-import { fetchDocument } from "firebaseServices/firestore/document";
+import { fetchDocument } from "firebaseServices/firestore/Document/document";
 
 async function getSellerContactsById(userId: string): Promise<ISellerContacts | null> {
   if (!userId) {

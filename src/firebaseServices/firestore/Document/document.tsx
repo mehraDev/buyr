@@ -20,7 +20,19 @@ async function createDocument(
 interface DocumentFields {
   [fieldName: string]: any;
 }
-
+async function doesDocumentExist(
+  location: string,
+  documentId: string
+): Promise<boolean> {
+  try {
+    const docRef = doc(db, location, documentId);
+    const docSnapshot = await getDoc(docRef);
+    return docSnapshot.exists();
+  } catch (error) {
+    console.error("Error checking document existence:", error);
+    throw error;
+  }
+}
 async function fetchDocument(
   location: string,
   documentId: string,
@@ -40,7 +52,6 @@ async function fetchDocument(
             filteredData[field] = documentData[field];
           }
         }
-        // console.log("Filtered Document Data:", filteredData);
         return filteredData;
       } else {
         return documentData as DocumentFields;
@@ -54,4 +65,4 @@ async function fetchDocument(
   }
 }
 
-export { fetchDocument, createDocument };
+export { fetchDocument, createDocument, doesDocumentExist };

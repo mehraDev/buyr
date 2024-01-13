@@ -2,7 +2,7 @@ import { IProductFood } from "app/interfaces";
 import React from "react";
 import { useTheme } from "styled-components";
 import { Col, Row, Text } from "ui/basic";
-import { CartItem } from "../../Cart/Food/FoodCartContext";
+import { CartItem } from "../../../Cart/Food/FoodCartContext";
 
 interface OrderListProps {
   items: CartItem[];

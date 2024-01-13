@@ -15,7 +15,7 @@ import FilterCard from "./components/FilterCard/FilterCard";
 import { Sticky } from "ui/Sticky";
 import Button from "ui/Button";
 import Icon, { IconName } from "ui/Icon";
-import FoodOrderSummary from "app/components/Seller/components/OrderSummary/FoodOrderSummary";
+import FoodOrderSummary from "app/components/Seller/components/OrderSummary/Food/FoodOrderSummary";
 import { useFoodCart } from "app/components/Seller/Cart/Food/FoodCartContext";
 
 interface IFoodMenu {
